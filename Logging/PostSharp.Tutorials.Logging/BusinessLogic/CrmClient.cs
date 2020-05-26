@@ -10,11 +10,11 @@ namespace PostSharp.Tutorials.Logging.BusinessLogic
         public string Server { get; }
         public string Login { get; }
 
-        public CrmClient(string server, string login, string password)
+        public CrmClient(string server, string login, string credentials)
         {
             Server = server;
             Login = login;
-            this.password = password;
+            this.password = credentials;
         }
 
         public IEnumerable<Request> GetPendingRequests(string queue)

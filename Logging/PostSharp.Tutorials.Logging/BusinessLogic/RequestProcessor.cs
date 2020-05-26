@@ -46,10 +46,8 @@ namespace PostSharp.Tutorials.Logging.BusinessLogic
         {
             var user = Crm.GetUser(vacationRequest.User);
 
-            // TODO: compute business days instead of calendar days.
-            var days = (int) Math.Ceiling( (vacationRequest.To - vacationRequest.From).TotalDays );
             
-            if (days > user.VacationDaysLeft)
+            if (vacationRequest.Days > user.VacationDaysLeft)
             {
                 vacationRequest.Status = RequestStatus.Denied;
                 Crm.Update(vacationRequest);
@@ -57,7 +55,7 @@ namespace PostSharp.Tutorials.Logging.BusinessLogic
             else
             {
                 vacationRequest.Status = RequestStatus.Accepted;
-                user.VacationDaysLeft -= days;
+                user.VacationDaysLeft -= vacationRequest.Days;
                 Crm.Update(vacationRequest);
                 Crm.Update(user);
             }

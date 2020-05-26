@@ -32,12 +32,12 @@ namespace PostSharp.Tutorials.Logging.BusinessLogic
     public class VacationRequest : Request
     {
         public DateTime From { get; }
-        public DateTime To { get; }
+        public int Days { get; }
 
         public VacationRequest(int id, string user, DateTime @from, int days) : base(id, user)
         {
             From = @from;
-            To = @from.AddDays(days);
+            Days = days;
         }
     }
 }

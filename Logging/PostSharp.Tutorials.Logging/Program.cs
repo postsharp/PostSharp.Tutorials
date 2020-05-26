@@ -1,8 +1,7 @@
 ﻿using System;
 using PostSharp.Tutorials.Logging.BusinessLogic;
 using PostSharp.Patterns.Diagnostics;
-using PostSharp.Patterns.Diagnostics.Backends.Serilog;
-using Serilog;
+using PostSharp.Patterns.Diagnostics.Backends.Console;
 
 namespace PostSharp.Tutorials.Logging
 {
@@ -10,19 +9,10 @@ namespace PostSharp.Tutorials.Logging
     {
         static void Main(string[] args)
         {
-            // The output template must include {Indent} for nice output.
-            const string template = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Indent:l}{Message}{NewLine}{Exception}";
-
-            // Configure a Serilog logger.
-            var logger = new LoggerConfiguration()
-              .MinimumLevel.Debug()
-              .WriteTo.File("serilog.log", outputTemplate: template)
-              .WriteTo.ColoredConsole(outputTemplate: template)
-              .CreateLogger();
-
-            // Configure PostSharp Logging to use Serilog
-            var backend = new SerilogLoggingBackend(logger);
-            // backend.Options.UseSerilogFormatters = true;
+            // Configure PostSharp Logging to write to the console.
+            var backend = new ConsoleLoggingBackend();
+            backend.Options.Theme = ConsoleThemes.Dark;
+            backend.Options.IncludeExceptionDetails = false;
             LoggingServices.DefaultBackend = backend;
 
             RequestProcessor requestProcessor = new RequestProcessor();
