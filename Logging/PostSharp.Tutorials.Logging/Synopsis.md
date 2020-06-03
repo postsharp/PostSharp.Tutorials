@@ -1,19 +1,33 @@
 # Synopsis
 
+## General Instructions
+
+* Recording resolution: 1280×720 
+* Visual Studio 2019
+* White Theme
+* Font size: x pt
+* Include the mouse pointer in the capture
+
 ## Step 1. Preparation
 
 * Open the pre-prepared project from https://github.com/postsharp/PostSharp.Tutorials/tree/before/Logging/PostSharp.Tutorials.Logging. Attention: this is the _before_ branch. The master branch is what you get when you've completed the steps below.
 
 * Add the NuGet package `PostSharp.Patterns.Diagnostics`.
 
-*  Create a new C# file named `GlobalAspects.cs` (the name is arbitrary) and add this code:
+* Create a `postsharp.config` (in VS solution explorer, right-click on the project and doo Add > New Item > PostSharp > PostSharp Configuration File) . 
 
-```cs
-using PostSharp.Patterns.Diagnostics;
-[assembly: Log]
+* Paste the following code within the `Project` element:
+
+```xml
+<Multicast xmlns:d="clr-namespace:PostSharp.Patterns.Diagnostics;assembly:PostSharp.Patterns.Diagnostics">
+	<!-- Adds logging to every method -->
+	<d:Log/>
+</Multicast>
 ```
 
 The next steps will configure PostSharp Logging to write to the console:
+
+* Go back to `Program.cs`.
 
 * Add the namespaces:
 
@@ -21,8 +35,6 @@ The next steps will configure PostSharp Logging to write to the console:
 using PostSharp.Patterns.Diagnostics;
 using PostSharp.Patterns.Diagnostics.Backends.Console;
 ```
-
-* Go back to `Program.cs`.
 
  * Add this code on the top of the `Main` method:
 
@@ -36,32 +48,30 @@ LoggingServices.DefaultBackend = backend;
 
 * Run the application and look at the log on the console.
 
-* Notice the following in the log:
-   * How detailed it is. Every method call is present.
-   * Parameters value are printed. This is useful to reproduce a problem,
-   * However, the log is too detailed. That's  property getters/setters are instrumented.
+* Scroll up in the log and mark pauses so that the following can be added in post-production:
+   * Highlighting some parameter values
+   * Highlighting return values.
+   * Highlighting a few calls to getters/setters.
 
 ## Step 2. Reducing noise
 
-* Go back to `GlobalAspects.cs`.
+* Go back to `postsharp.config`.
 
-* Edit `[assembly: Log]` to change it to `[assembly: Log(AttributePriority = 1)]` (insert the missing text).
+* Append the following XML code into the `Multicast` element:
 
-* Add this: 
-
-```cs
-[assembly: Log(AttributePriority = 2, AttributeExclude = true, AttributeTargetMembers = "regex:get_*|set_*")]
+```xml
+<!-- Remove logging from property getters and setters -->
+<d:Log AttributeExclude="true" AttributeTargetMembers="regex:get_*|set_*"/>
 ```
 
-* Recompile, run the program, and notice that the log has much less noise.
+* Recompile, run the program, show the log. Mark a pause to show it no longer includes getter/setter.
 
 ## Step 3. Adding execution time
 
-Wouldn't it be nice to display the execution time?  
 
-* Create a `postsharp.config` (in VS solution explorer, right-click on the project and doo Add > New Item > PostSharp > PostSharp Configuration File)  
+* Go back to `postsharp.config`.
 
-* Paste the following code within the `Project` element:
+* Paste the following code after the `Multicast` element:
 
 ```xml
 <Logging xmlns="clr-namespace:PostSharp.Patterns.Diagnostics;assembly:PostSharp.Patterns.Diagnostics">
@@ -75,21 +85,18 @@ Wouldn't it be nice to display the execution time?
 </Logging>
 ```
 
-* That includes three settings:
-  * Adding the method execution time to the log, for all methods.
-  * When the execution time is higher than 200 ms, write a warning.
-  * Include the parameter name in te log.
-
-* Execute the program and see the new features in the log:
- the execution time, the warning when some methods takes longer, and the parameter name.
+* Execute the program and show the new features in the log. In pot-production, highlight:
+     * the execution time, 
+	 * the warning when some methods takes longer, and
+	 * the parameter names.
 
 ## Step 4. Security
 
-You can see in the log that some password has been printed. How bad. Let's fix that.
+* Scroll to the top of the log. In post-production, highlight the `supersecret` password.
 
-* Go to the source code of `CrmClient` and add [NotLogged] to the custom attribute. 
+* Go to the constructor of `CrmClient` and add [NotLogged] to the `credentials` parameter.
 
-* Run the application again and show that the password is no longer in the log.
+* Run the application again and scroll up to the top of the log. In post-production, highlight the `***` instead of the password.
 
 
 
