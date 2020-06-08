@@ -28,7 +28,7 @@ The second step is to add logging to all methods in these projects.
 
 Create a configuration file named `postsharp.config`. If you store this file in the project directory, it only applies to this specific project. But if you store it in a parent directory, for instance to the root of your repository, it applies to all projects in all subdirectories.
 
-This XML code adds logging to all methods of my projects.
+This XML code adds logging to all methods of your projects.
 
 The third and final step is to say where PostSharp has to write the log records. PostSharp supports the most popular logging frameworks including Log4Net, NLog, Serilog, the standard system .NET APIs, and many others. In this video, we just use the console.
 
