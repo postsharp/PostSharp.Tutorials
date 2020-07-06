@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 
 namespace PostSharp.Tutorials.MVVM.Model
 {
@@ -15,6 +16,7 @@ namespace PostSharp.Tutorials.MVVM.Model
 
         public string Country { get; set; }
 
+        [SafeForDependencyAnalysis]
         public string FullAddress
         {
             get

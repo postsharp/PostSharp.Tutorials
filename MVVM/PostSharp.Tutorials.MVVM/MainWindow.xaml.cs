@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Xaml;
 using PostSharp.Tutorials.MVVM.Model;
 using PostSharp.Tutorials.MVVM.ViewModel;
@@ -10,6 +11,7 @@ namespace PostSharp.Tutorials.MVVM
     /// <summary>
     ///   Interaction logic for MainWindow.xaml
     /// </summary>
+    [NotifyPropertyChanged]
     public partial class MainWindow : Window
     {
         private CustomerViewModel _customerViewModel;
@@ -54,13 +56,13 @@ namespace PostSharp.Tutorials.MVVM
 
         }
 
-        private void ExecuteSetPrincipalAddress() => this._customerViewModel.Customer.PrincipalAddress = this._customerViewModel.CurrentAddress;
+        private void SetPrincipalAddress() => this._customerViewModel.Customer.PrincipalAddress = this._customerViewModel.CurrentAddress;
 
 
         [Command] 
         public ICommand SetPrincipalAddressCommand { get; private set; }
 
-        public bool CanExecuteSetPrincipalAddress =>
+        public bool CanSetPrincipalAddress =>
             this._customerViewModel != null &&
             this._customerViewModel.CurrentAddress != null &&
             this._customerViewModel.Customer != null &&
