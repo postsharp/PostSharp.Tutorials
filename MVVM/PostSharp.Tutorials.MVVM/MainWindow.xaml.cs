@@ -56,7 +56,7 @@ namespace PostSharp.Tutorials.MVVM
 
         }
 
-        private void SetPrincipalAddress() => this._customerViewModel.Customer.PrincipalAddress = this._customerViewModel.CurrentAddress;
+        private void SetPrincipalAddress() => this._customerViewModel.Customer.PrincipalAddress = this._customerViewModel.SelectedAddress;
 
 
         [Command] 
@@ -64,9 +64,9 @@ namespace PostSharp.Tutorials.MVVM
 
         public bool CanSetPrincipalAddress =>
             this._customerViewModel != null &&
-            this._customerViewModel.CurrentAddress != null &&
+            this._customerViewModel.SelectedAddress != null &&
             this._customerViewModel.Customer != null &&
-            !this._customerViewModel.IsCurrentAddressPrincipal;
+            !this._customerViewModel.IsSelectedAddressPrincipal;
 
         
 

@@ -81,25 +81,25 @@ version that is not yet been published. This step wll not be necessary when the 
 * Open the file `MainWindow.xaml.cs`.  After the constructor, paste the following code:
 
 ```cs
-private void SetCurrentAddressAsPrincipal() 
-   => _customerViewModel.Customer.PrincipalAddress = _customerViewModel.CurrentAddress;
+private void SetPrincipalAddress() 
+   => _customerViewModel.Customer.PrincipalAddress = _customerViewModel.SelectedAddress;
 ```
 
-* Place the caret inside the name of the `SetCurrentAddressAsPrincipal` method. Click on the brush icon.
+* Place the caret inside the name of the `SetPrincipalAddress` method. Click on the brush icon.
 Choose _Expose as a XAML command (with CanExecute)_. Wait a second or two on the preview, then apply.
 
-* Go to `CanSetCurrentAddressAsPrincipal` the replace `true` by this:
+* Go to `CanSetPrincipalAddress` the replace `true` by this:
 
 ```cs
-_customerViewModel != null && _customerViewModel.CurrentAddress != null &&
-!_customerViewModel.IsCurrentAddressPrincipal
+_customerViewModel != null && _customerViewModel.SelectedAddress != null &&
+!_customerViewModel.IsSelectedAddressPrincipal
 ```
 
 * Open `MainWindow.xaml`. In the designer, click on the _Set Principal_ button. Go to the XAML view
 and add the following attribute to the `<Button>` element:
 
 ```xml
-Command="{Binding ElementName=Window, Path=SetCurrentAddressAsPrincipalCommand}"
+Command="{Binding ElementName=Window, Path=SetPrincipalAddressCommand}"
 ```
 
 * Run the application.

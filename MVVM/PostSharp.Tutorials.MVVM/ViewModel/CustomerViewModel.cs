@@ -11,9 +11,9 @@ namespace PostSharp.Tutorials.MVVM.ViewModel
     {
         public CustomerModel Customer { get; set; }
 
-        public AddressModel CurrentAddress { get; set; }
+        public AddressModel SelectedAddress { get; set; }
 
-        public bool IsCurrentAddressPrincipal => this.CurrentAddress == this.Customer?.PrincipalAddress;
+        public bool IsSelectedAddressPrincipal => this.SelectedAddress == this.Customer?.PrincipalAddress;
 
         
         public string LabelContent
