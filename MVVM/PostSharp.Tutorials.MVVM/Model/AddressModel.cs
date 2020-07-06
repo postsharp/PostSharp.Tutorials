@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Text;
+﻿using System.Text;
 
 namespace PostSharp.Tutorials.MVVM.Model
 {
