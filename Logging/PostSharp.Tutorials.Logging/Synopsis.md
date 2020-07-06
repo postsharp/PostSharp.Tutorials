@@ -8,9 +8,11 @@
 * Font size: x pt
 * Include the mouse pointer in the capture
 
-## Step 1. Preparation
+## Step 0. Preparation
 
 * Open the pre-prepared project from https://github.com/postsharp/PostSharp.Tutorials/tree/before/Logging/PostSharp.Tutorials.Logging. Attention: this is the _before_ branch. The master branch is what you get when you've completed the steps below.
+
+## Step 1. Adding logging everywhere
 
 * Add the NuGet package `PostSharp.Patterns.Diagnostics`.
 
