@@ -14,9 +14,6 @@ namespace PostSharp.Tutorials.MVVM.Model
 
         public string Country { get; set; }
 
-        public DateTime Expiration { get; set; }
-
-
         public string FullAddress
         {
             get
