@@ -35,7 +35,7 @@
                    Grid.Column="0" Grid.Row="2" />
         <ListBox HorizontalAlignment="Stretch" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=Customer.Addresses}"
-                      SelectedValue="{Binding Path=DisplayedAddress}" DisplayMemberPath="FullAddress"
+                      SelectedValue="{Binding Path=CurrentAddress}" DisplayMemberPath="FullAddress"
                       Grid.Column="1" Grid.Row="2" Height="100" />
 
         <GroupBox Grid.ColumnSpan="2" Header="Address" Grid.Row="3" Grid.Column="0"  Margin="-8 10 -7 0" HorizontalAlignment="Stretch" >
@@ -51,18 +51,18 @@
                 </Grid.RowDefinitions>
                 <Label Content="Line1:" HorizontalAlignment="Left" VerticalAlignment="Top"   Grid.Column="0" Grid.Row="0" Height="26" Width="41" />
                 <TextBox HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap"
-                     Text="{Binding Path=DisplayedAddress.Line1, ValidatesOnExceptions=True}"
+                     Text="{Binding Path=CurrentAddress.Line1, ValidatesOnExceptions=True}"
                      VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" Margin="0.333,0,-0.333,0" />
                 <Label Content="Town:" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Grid.Column="0" Grid.Row="1" Height="26" Margin="0,0.333,0,0" Grid.RowSpan="2" Width="40" />
                 <TextBox HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap"
-                     Text="{Binding Path=DisplayedAddress.Town, ValidatesOnExceptions=True}"
+                     Text="{Binding Path=CurrentAddress.Town, ValidatesOnExceptions=True}"
                      VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Margin="0.333,0.333,-0.333,0" Grid.RowSpan="2" />
 
                 <Label Content="Principal Address" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Grid.Column="0" Grid.Row="2" Height="26" Margin="0,0.333,0,0" Width="101" />
                 <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="8.333,3.333,-0.333,3" Height="21">
-                    <CheckBox IsChecked="{Binding IsDisplayAddressPrincipal, Mode=OneWay}" IsEnabled="False" Margin="0 0 10 0"/>
+                    <CheckBox IsChecked="{Binding IsCurrentAddressPrincipal, Mode=OneWay}" IsEnabled="False" Margin="0 0 10 0"/>
                     <Button>Set Principal</Button>
                 </StackPanel>
             </Grid>

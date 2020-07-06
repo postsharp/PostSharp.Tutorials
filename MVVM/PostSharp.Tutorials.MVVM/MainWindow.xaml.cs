@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using PostSharp.Tutorials.MVVM.Model;
 using PostSharp.Tutorials.MVVM.ViewModel;
 
@@ -10,6 +11,7 @@ namespace PostSharp.Tutorials.MVVM
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CustomerViewModel _customerViewModel;
 
         public MainWindow()
         {
@@ -17,7 +19,7 @@ namespace PostSharp.Tutorials.MVVM
 
             // Replace the design-time data context with real data.
 
-            var _customerViewModel = new CustomerViewModel
+            this._customerViewModel = new CustomerViewModel
             {
                 Customer =
                     new CustomerModel
