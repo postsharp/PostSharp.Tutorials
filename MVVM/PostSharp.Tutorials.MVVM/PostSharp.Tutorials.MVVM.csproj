@@ -110,10 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PostSharp">
-      <Version>6.4.6</Version>
+      <Version>6.4.10</Version>
     </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Xaml">
-      <Version>6.4.6</Version>
+      <Version>6.4.10</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

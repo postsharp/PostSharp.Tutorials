@@ -20,12 +20,6 @@ namespace PostSharp.Tutorials.MVVM.Model
 
         public string Country { get; set; }
 
-        public DateTime Expiration { get; set; }
-
-        [IgnoreAutoChangeNotification]
-        public TimeSpan Lifetime => DateTime.Now - Expiration;
-
-        [SafeForDependencyAnalysis]
         public string FullAddress
         {
             get
