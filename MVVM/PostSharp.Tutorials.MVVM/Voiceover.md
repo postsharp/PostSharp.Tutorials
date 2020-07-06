@@ -41,11 +41,12 @@ The next step is to implement the code behind the _Set Principal Address_ button
 
 Go back to the `MainWindow` code and write the command as a normal method.
 
-Now open the refactoring menu and choose _Expose as a XAML command with CanExecute_.
+Now open the refactoring menu and choose _Expose as a XAML command with CanExecute_. 
 
-Provide an implementation for the `CanExecute` method. Note that the wizard has added the `NotifyPropertyChanged` aspect to this class to.
+Provide an implementation for the `CanExecute` property. Note that the wizard has added the `NotifyPropertyChanged` aspect to this class to,
+and a new public property to expose the command.
 
-Now go to the XAML code and bind the button to the command we've just created.
+Now go to the XAML code and bind the button to the new command property.
 
 We're done!
 
