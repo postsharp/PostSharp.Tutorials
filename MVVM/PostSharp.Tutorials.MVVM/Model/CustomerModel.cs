@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using PostSharp.Patterns.Contracts;
 
 namespace PostSharp.Tutorials.MVVM.Model
 {
@@ -7,7 +6,6 @@ namespace PostSharp.Tutorials.MVVM.Model
     {
         public string FirstName { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
         public string Phone { get; set; }
