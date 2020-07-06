@@ -11,12 +11,11 @@ namespace PostSharp.Tutorials.MVVM.ViewModel
     {
         public CustomerModel Customer { get; set; }
 
-        public AddressModel DisplayedAddress { get; set; }
+        public AddressModel CurrentAddress { get; set; }
 
-        public bool IsDisplayAddressPrincipal => this.DisplayedAddress == this.Customer?.PrincipalAddress;
+        public bool IsCurrentAddressPrincipal => this.CurrentAddress == this.Customer?.PrincipalAddress;
 
-        public void AssignDisplayedAddressToPrincipal() => this.Customer.PrincipalAddress = this.DisplayedAddress;
-
+        
         public string LabelContent
         {
             get
@@ -30,14 +29,6 @@ namespace PostSharp.Tutorials.MVVM.ViewModel
             }
         }
 
-
-        [Command] public ICommand SetPrincipalAddressCommand { get; private set; }
-
-        public bool CanExecuteSetPrincipalAddress =>
-            this.DisplayedAddress != null &&
-            this.Customer != null &&
-            !this.IsDisplayAddressPrincipal;
-
-        private void ExecuteSetPrincipalAddress() => this.AssignDisplayedAddressToPrincipal();
+        
     }
 }
