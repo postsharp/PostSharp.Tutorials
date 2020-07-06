@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="clr-namespace:PostSharp.Tutorials.MVVM"
              mc:Ignorable="d">
-    <Border BorderThickness="3" Padding="5" BorderBrush="Blue"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=mvvm:LabelPreviewControl}}">
+    <Border BorderThickness="3" Padding="10" BorderBrush="Gray"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=mvvm:LabelPreviewControl}}" Background="LightGray">
         
         <TextBlock Text="{Binding Path=Text, FallbackValue='Unbound.'}" FontFamily="Consolas" />
     </Border>

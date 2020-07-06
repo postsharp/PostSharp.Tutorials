@@ -4,18 +4,18 @@ using PostSharp.Patterns.Xaml;
 
 namespace PostSharp.Tutorials.MVVM
 {
-  
-  public partial class LabelPreviewControl : UserControl
-  {
-    public LabelPreviewControl()
+
+    public partial class LabelPreviewControl : UserControl
     {
-      InitializeComponent();
+        public LabelPreviewControl()
+        {
+            InitializeComponent();
+        }
+
+
+        [DependencyProperty]
+        [Required]
+        public string Text { get; set; }
+
     }
-
-
-    [DependencyProperty]
-    [Required]
-    public string Text { get; set; }
-
-  }
 }
