@@ -1,8 +1,8 @@
-﻿using PostSharp.Patterns.Contracts;
+﻿using System.Windows.Controls;
+using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Xaml;
-using System.Windows.Controls;
 
-namespace PostSharp.Samples.Xaml
+namespace PostSharp.Tutorials.MVVM
 {
   
   public partial class LabelPreviewControl : UserControl

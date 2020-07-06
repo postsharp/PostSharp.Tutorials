@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace PostSharp.Samples.Xaml
+namespace PostSharp.Tutorials.MVVM
 {
   /// <summary>
   ///   Interaction logic for App.xaml

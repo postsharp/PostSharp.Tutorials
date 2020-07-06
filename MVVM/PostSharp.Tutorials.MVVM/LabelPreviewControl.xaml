@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="PostSharp.Samples.Xaml.LabelPreviewControl"
+﻿<UserControl x:Class="PostSharp.Tutorials.MVVM.LabelPreviewControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:PostSharp.Samples.Xaml"
+             xmlns:mvvm="clr-namespace:PostSharp.Tutorials.MVVM"
              mc:Ignorable="d">
     <Border BorderThickness="3" Padding="5" BorderBrush="Blue"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:LabelPreviewControl}}">
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=mvvm:LabelPreviewControl}}">
         
         <TextBlock Text="{Binding Path=Text, FallbackValue='Unbound.'}" FontFamily="Consolas" />
     </Border>

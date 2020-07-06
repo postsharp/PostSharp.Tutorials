@@ -1,10 +1,10 @@
-﻿using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Text;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 
-namespace PostSharp.Samples.Xaml
+namespace PostSharp.Tutorials.MVVM.Model
 {
     public class AddressModel : ModelBase
     {

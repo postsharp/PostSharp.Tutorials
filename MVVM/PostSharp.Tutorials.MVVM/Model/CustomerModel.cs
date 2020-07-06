@@ -1,10 +1,7 @@
-﻿using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Threading;
+﻿using System.Collections.ObjectModel;
+using PostSharp.Patterns.Contracts;
 
-namespace PostSharp.Samples.Xaml
+namespace PostSharp.Tutorials.MVVM.Model
 {
     public class CustomerModel : ModelBase
     {
