@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PostSharp.Tutorials.Threading"
         mc:Ignorable="d"
         x:Name="Window"
-        Title="MainWindow" Height="569.333" Width="607.334">
+        Title="Creature Board" Height="630" Width="659.334">
     <Window.DataContext>
         <local:BoardViewModel/>
     </Window.DataContext>
@@ -35,7 +35,7 @@
         </TextBlock>
 
         <ItemsControl ItemsSource="{Binding Creatures}" RenderTransformOrigin="0.5,0.5">
-            
+
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Rectangle Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="4" Opacity="{Binding Opacity}" Width="25" Height="20" MouseLeftButtonDown="Creature_MouseLeftButtonDown">
@@ -58,7 +58,8 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray" Margin="20" Width="400" Height="400" />
+                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray" Margin="20" 
+                            Width="440" Height="440" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>

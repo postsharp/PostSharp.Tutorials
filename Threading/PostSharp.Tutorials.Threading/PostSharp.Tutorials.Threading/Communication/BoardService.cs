@@ -57,6 +57,7 @@ namespace PostSharp.Tutorials.Threading.Communication
             Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += OnCreaturePropertyChanged;
         }
 
+        [Background]
         private static void OnCreaturesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -74,7 +75,7 @@ namespace PostSharp.Tutorials.Threading.Communication
             }
         }
 
-
+        [Background]
         private static void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var creature = (Creature)sender;
@@ -84,9 +85,13 @@ namespace PostSharp.Tutorials.Threading.Communication
 
                 switch (e.PropertyName)
                 {
-                    case "X":
-                    case "Y":
-                        ForEachSession(session => session.Callback.OnCreatureMoved(creature.Id, creature.X, creature.Y));
+                    case "Position":
+                        ForEachSession(session =>
+                            {
+                                var position = creature.Position;
+
+                                session.Callback.OnCreatureMoved(creature.Id, position.X, position.Y);
+                            });
                         break;
 
                     case "Orientation":

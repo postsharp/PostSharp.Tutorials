@@ -24,9 +24,9 @@ namespace PostSharp.Tutorials.Threading
 
         public Guid Id => this.Creature.Id;
 
-        public double X => this.Creature.X * 20 + 200;
+        public double X => this.Creature.X * 20 + 210;
 
-        public double Y => this.Creature.Y * 20 + 200;
+        public double Y => this.Creature.Y * 20 + 210;
 
         public bool IsSelected => this.board.SelectedCreature == this;
 
@@ -37,7 +37,7 @@ namespace PostSharp.Tutorials.Threading
       
         public Brush StrokeColor => this.IsSelected ? Brushes.MediumAquamarine : Brushes.Transparent;
 
-        public double Opacity => this.IsSelected ? 1 : 0.4;
+        public double Opacity => this.IsSelected ? 1 : 0.6;
         
     }
 }
