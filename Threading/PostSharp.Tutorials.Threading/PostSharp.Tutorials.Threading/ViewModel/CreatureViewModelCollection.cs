@@ -23,6 +23,7 @@ namespace PostSharp.Tutorials.Threading
         protected override CreatureViewModel CreateViewModel(Creature modelItem)
          => new CreatureViewModel(modelItem, this.board);
 
+        [Reader]
         protected override Guid GetKeyForItem(CreatureViewModel item) => item.Id;
        
     }

@@ -15,6 +15,7 @@ namespace PostSharp.Tutorials.Threading.Communication
     
     internal static class BoardService 
     {
+        [ExplicitlySynchronized]
         private static Board board;
 
         [ExplicitlySynchronized]
@@ -185,8 +186,10 @@ namespace PostSharp.Tutorials.Threading.Communication
           
         }
 
+        [Immutable]
         class Connection : IConnection
         {
+            [Reference]
             private ServiceHost host;
 
             public Connection(ServiceHost host)
@@ -194,12 +197,15 @@ namespace PostSharp.Tutorials.Threading.Communication
                 this.host = host;
             }
 
-            public event EventHandler Closed;
 
             public void Close()
             {
                 this.host.Close();
             }
+
+#pragma warning disable CS0067
+            public event EventHandler Closed;
+
         }
 
     }

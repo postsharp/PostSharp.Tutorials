@@ -32,6 +32,7 @@ namespace PostSharp.Tutorials.Threading
         [SafeForDependencyAnalysis]
         private BoardViewModel Board => (BoardViewModel)this.DataContext;
 
+        [Reference]
         private IConnection connection;
 
         public MainWindow()
@@ -127,7 +128,7 @@ namespace PostSharp.Tutorials.Threading
 
         private void AddCreature()
         {
-            var creature = RandomGenerator.CreateCreature();
+            var creature = RandomGenerator.Instance.CreateCreature();
             this.Board.Board.Creatures.Add(creature);
             this.Board.SelectedCreature = this.Board.Creatures[creature.Id];
         }

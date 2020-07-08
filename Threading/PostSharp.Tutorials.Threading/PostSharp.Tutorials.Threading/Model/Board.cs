@@ -21,10 +21,10 @@ namespace PostSharp.Tutorials.Threading
         public Board()
         {
             // Initialize the board with a few creatures.
-            this.Creatures.Add(RandomGenerator.CreateCreature());
-            this.Creatures.Add(RandomGenerator.CreateCreature());
-            this.Creatures.Add(RandomGenerator.CreateCreature());
-            this.Creatures.Add(RandomGenerator.CreateCreature());
+            this.Creatures.Add(RandomGenerator.Instance.CreateCreature());
+            this.Creatures.Add(RandomGenerator.Instance.CreateCreature());
+            this.Creatures.Add(RandomGenerator.Instance.CreateCreature());
+            this.Creatures.Add(RandomGenerator.Instance.CreateCreature());
         }
     }
 

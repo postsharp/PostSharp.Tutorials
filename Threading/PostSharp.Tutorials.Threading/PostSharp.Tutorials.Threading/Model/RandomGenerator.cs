@@ -1,20 +1,29 @@
-﻿using System;
+﻿using PostSharp.Patterns.Model;
+using PostSharp.Patterns.Threading;
+using System;
 using System.Linq;
 using System.Windows.Media;
 
 namespace PostSharp.Tutorials.Threading
 {
-    internal static class RandomGenerator
+    [Synchronized]
+    internal class RandomGenerator
     {
-        static readonly Random random = new Random();
-        static readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
 
-        public static string GetRandomColor()
+        public static readonly RandomGenerator Instance = new RandomGenerator();
+
+        [Reference]
+        readonly Random random = new Random();
+
+        [Reference]
+        readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
+
+        public string GetRandomColor()
         {
             return colors[random.Next(colors.Length)];
         }
 
-        public static Creature CreateCreature()
+        public Creature CreateCreature()
         {
             return new Creature
             {
