@@ -1,5 +1,4 @@
-﻿using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
+﻿using PostSharp.Patterns.Threading;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.ServiceModel.Configuration;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
-    
+
     internal static class BoardService 
     {
         [ExplicitlySynchronized]
@@ -111,7 +110,7 @@ namespace PostSharp.Tutorials.Threading.Communication
         {
             foreach (var entry in sessions)
             {
-                bool remove = false;
+                var remove = false;
                 if (entry.Value.TryGetTarget(out var session))
                 {
                     try
@@ -188,7 +187,7 @@ namespace PostSharp.Tutorials.Threading.Communication
         [Immutable]
         class Connection : IConnection
         {
-            private ServiceHost host;
+            private readonly ServiceHost host;
 
             public Connection(ServiceHost host)
             {

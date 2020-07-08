@@ -1,5 +1,4 @@
-﻿using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
+﻿using PostSharp.Patterns.Threading;
 using System;
 using System.Linq;
 using System.Windows.Media;
@@ -18,17 +17,17 @@ namespace PostSharp.Tutorials.Threading
 
         public string GetRandomColor()
         {
-            return colors[random.Next(colors.Length)];
+            return this.colors[this.random.Next(this.colors.Length)];
         }
 
         public Creature CreateCreature()
         {
             return new Creature
             {
-                X = random.NextDouble() * 20 - 10,
-                Y = random.NextDouble() * 20 - 10,
-                Orientation = random.Next(359),
-                Color = GetRandomColor()
+                X = this.random.NextDouble() * 20 - 10,
+                Y = this.random.NextDouble() * 20 - 10,
+                Orientation = this.random.Next(359),
+                Color = this.GetRandomColor()
             };
                 
         }

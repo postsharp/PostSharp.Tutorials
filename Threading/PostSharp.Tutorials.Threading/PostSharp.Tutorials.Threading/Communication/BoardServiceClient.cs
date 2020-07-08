@@ -1,7 +1,5 @@
-﻿using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
+﻿using PostSharp.Patterns.Threading;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -32,14 +30,14 @@ namespace PostSharp.Tutorials.Threading.Communication
 
             this.Connect();
 
-            this.board.Creatures.CollectionChanged += OnCollectionChanged;
+            this.board.Creatures.CollectionChanged += this.OnCollectionChanged;
 
             this.Subscribe(this.board.Creatures);
         }
 
         void Connect()
         {
-            ServiceModelSectionGroup group = ServiceModelSectionGroup.GetSectionGroup(
+            var group = ServiceModelSectionGroup.GetSectionGroup(
                   ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
 
             //create duplex channel factory
@@ -48,14 +46,14 @@ namespace PostSharp.Tutorials.Threading.Communication
             //create a communication channel and register for its events
             this.serviceProxy = serviceFactory.CreateChannel();
 
-            IClientChannel channel = (IClientChannel)serviceProxy;
+            var channel = (IClientChannel) this.serviceProxy;
             channel.Open();
-            channel.Closed += OnChannelClosed;
-            channel.Faulted += OnChannelClosed;
+            channel.Closed += this.OnChannelClosed;
+            channel.Faulted += this.OnChannelClosed;
 
 
             this.board.Creatures.Clear();
-            foreach (var creature in serviceProxy.GetCreatures())
+            foreach (var creature in this.serviceProxy.GetCreatures())
             {
                 this.board.Creatures.Add(creature);
             }
@@ -73,20 +71,20 @@ namespace PostSharp.Tutorials.Threading.Communication
 
         private void Subscribe(IEnumerable<Creature> creatures)
         {
-            foreach ( Creature creature in creatures )
+            foreach ( var creature in creatures )
             {
-                Subscribe(creature);
+                this.Subscribe(creature);
             }
         }
 
         private void Subscribe(Creature creature)
         {
-            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += OnCreaturePropertyChanged;
+            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
 
         private void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Creature creature = (Creature)sender;
+            var creature = (Creature)sender;
 
             try
             {
@@ -127,7 +125,7 @@ namespace PostSharp.Tutorials.Threading.Communication
                         {
 
                         }
-                        Subscribe(creature);
+                        this.Subscribe(creature);
                     }
                     break;
 
@@ -157,14 +155,14 @@ namespace PostSharp.Tutorials.Threading.Communication
             if (!this.board.Creatures.Contains(creature.Id))
             {
                 this.board.Creatures.Add(creature);
-                Subscribe(creature);
+                this.Subscribe(creature);
 
             }
         }
 
         public void Close()
         {
-            ((IClientChannel)serviceProxy).Open();
+            ((IClientChannel) this.serviceProxy).Open();
         }
 
        

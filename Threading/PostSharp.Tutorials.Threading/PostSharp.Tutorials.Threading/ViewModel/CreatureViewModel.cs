@@ -38,10 +38,7 @@ namespace PostSharp.Tutorials.Threading
         public Brush StrokeColor => this.IsSelected ? Brushes.MediumAquamarine : Brushes.Transparent;
 
         public double Opacity => this.IsSelected ? 1 : 0.4;
-
         
     }
-
-
 }
 

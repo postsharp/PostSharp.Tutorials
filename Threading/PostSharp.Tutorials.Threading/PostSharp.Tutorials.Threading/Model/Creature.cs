@@ -27,7 +27,7 @@ namespace PostSharp.Tutorials.Threading
         [Writer]
         public bool TryMove(double step)
         {
-            double radians = 2 * Math.PI * this.Orientation / 360.0;
+            var radians = 2 * Math.PI * this.Orientation / 360.0;
 
             return this.TryMoveTo( this.X + Math.Cos(radians) * step, this.Y + Math.Sin(radians) * step);
         }
@@ -60,10 +60,6 @@ namespace PostSharp.Tutorials.Threading
             }
         }
 
-
-
     }
-
-
 }
 
