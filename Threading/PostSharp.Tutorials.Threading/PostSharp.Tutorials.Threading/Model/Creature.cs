@@ -4,6 +4,7 @@ using System;
 
 namespace PostSharp.Tutorials.Threading
 {
+
     [NotifyPropertyChanged( PreventFalsePositives = true ) ]
     public class Creature
     {
@@ -15,6 +16,8 @@ namespace PostSharp.Tutorials.Threading
 
         [Range(-10, 10)]
         public double Y { get; set; }
+
+        public Position Position => new Position(this.X, this.Y);
 
         public double Orientation { get; set; }
 

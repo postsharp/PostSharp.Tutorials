@@ -89,9 +89,9 @@ namespace PostSharp.Tutorials.Threading.Communication
 
                 switch (e.PropertyName)
                 {
-                    case "X":
-                    case "Y":
-                        this.serviceProxy.MoveCreatureTo(creature.Id, creature.X, creature.Y);
+                    case "Position":
+                        var position = creature.Position;
+                        this.serviceProxy.MoveCreatureTo(creature.Id, position.X, position.Y);
                         break;
 
                     case "Orientation":

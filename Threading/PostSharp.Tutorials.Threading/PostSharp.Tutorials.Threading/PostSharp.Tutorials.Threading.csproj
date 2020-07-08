@@ -63,6 +63,7 @@
     <Compile Include="Communication\IBoardCallback.cs" />
     <Compile Include="Communication\IBoardService.cs" />
     <Compile Include="Model\CreatureCollection.cs" />
+    <Compile Include="Model\Position.cs" />
     <Compile Include="Model\RandomGenerator.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />
     <Compile Include="Model\Creature.cs" />
