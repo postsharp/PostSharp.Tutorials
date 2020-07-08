@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading
 {
@@ -37,10 +36,7 @@ namespace PostSharp.Tutorials.Threading
         public Brush StrokeColor => this.IsSelected ? Brushes.MediumAquamarine : Brushes.Transparent;
 
         public double Opacity => this.IsSelected ? 1 : 0.4;
-
         
     }
-
-
 }
 

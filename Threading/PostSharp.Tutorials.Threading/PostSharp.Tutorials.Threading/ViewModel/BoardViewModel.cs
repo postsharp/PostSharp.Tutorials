@@ -1,5 +1,4 @@
 ﻿using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading
 {
@@ -16,9 +15,6 @@ namespace PostSharp.Tutorials.Threading
         {
             this.Creatures = new CreatureViewModelCollection(this.Board.Creatures, this);
         }
-
     }
-
-
 }
 

@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PostSharp.Patterns.Xaml;
 using PostSharp.Patterns.Model;
 using PostSharp.Tutorials.Threading.Communication;
-using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading
 {
@@ -25,8 +14,6 @@ namespace PostSharp.Tutorials.Threading
     [NotifyPropertyChanged]
     public partial class MainWindow : Window
     {
-        Random random = new Random();
-
         [SafeForDependencyAnalysis]
         private BoardViewModel Board => (BoardViewModel)this.DataContext;
 
@@ -34,7 +21,7 @@ namespace PostSharp.Tutorials.Threading
 
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void Creature_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -66,8 +53,6 @@ namespace PostSharp.Tutorials.Threading
         public ICommand RotateNegativeCommand { get; private set; }
 
         private void RotateNegative() => this.Board.SelectedCreature?.Creature.Rotate(-15);
-
-
 
         [Command]
         public ICommand ConnectAsServerCommand { get; private set; }
@@ -108,7 +93,7 @@ namespace PostSharp.Tutorials.Threading
         private void SetConnection( IConnection connection )
         {
             this.connection = connection;
-            this.connection.Closed += OnConnectionClosed;
+            this.connection.Closed += this.OnConnectionClosed;
 
         }
 

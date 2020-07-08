@@ -1,13 +1,7 @@
 ﻿using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostSharp.Tutorials.Threading
 {
@@ -17,9 +11,9 @@ namespace PostSharp.Tutorials.Threading
 
         public ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)
         {
-            Model = model;
+            this.Model = model;
 
-            model.CollectionChanged += OnModelCollectionChanged;
+            model.CollectionChanged += this.OnModelCollectionChanged;
 
         }
 

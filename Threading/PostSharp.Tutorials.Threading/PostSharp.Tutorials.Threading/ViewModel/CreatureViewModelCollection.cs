@@ -1,7 +1,5 @@
 ﻿using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 using System;
 
 namespace PostSharp.Tutorials.Threading
@@ -23,7 +21,6 @@ namespace PostSharp.Tutorials.Threading
         protected override Guid GetKeyForItem(CreatureViewModel item) => item.Id;
        
     }
-
 
 }
 

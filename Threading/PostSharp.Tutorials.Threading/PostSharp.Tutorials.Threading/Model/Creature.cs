@@ -1,6 +1,5 @@
 ﻿using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
 using System;
 
 namespace PostSharp.Tutorials.Threading
@@ -25,7 +24,7 @@ namespace PostSharp.Tutorials.Threading
 
         public bool TryMove(double step)
         {
-            double radians = 2 * Math.PI * this.Orientation / 360.0;
+            var radians = 2 * Math.PI * this.Orientation / 360.0;
 
             return this.TryMoveTo( this.X + Math.Cos(radians) * step, this.Y + Math.Sin(radians) * step);
         }
@@ -55,10 +54,6 @@ namespace PostSharp.Tutorials.Threading
             }
         }
 
-
-
     }
-
-
 }
 

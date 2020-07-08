@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
