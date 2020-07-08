@@ -6,10 +6,8 @@ using System;
 
 namespace PostSharp.Tutorials.Threading
 {
-    [ReaderWriterSynchronized]
     internal class CreatureViewModelCollection : ViewModelKeyedCollection<Guid, Creature, CreatureViewModel>
     {
-        [Reference]
         private readonly BoardViewModel board;
 
         public CreatureViewModelCollection([Required] AdvisableCollection<Creature> model, [Required] BoardViewModel board) : base(model)
@@ -19,11 +17,9 @@ namespace PostSharp.Tutorials.Threading
             this.AddFromModel();
         }
 
-        [Reader]
         protected override CreatureViewModel CreateViewModel(Creature modelItem)
          => new CreatureViewModel(modelItem, this.board);
 
-        [Reader]
         protected override Guid GetKeyForItem(CreatureViewModel item) => item.Id;
        
     }

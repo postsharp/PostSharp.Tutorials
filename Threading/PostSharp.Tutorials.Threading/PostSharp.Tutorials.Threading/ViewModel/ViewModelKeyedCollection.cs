@@ -11,10 +11,8 @@ using System.Threading.Tasks;
 
 namespace PostSharp.Tutorials.Threading
 {
-    [ReaderWriterSynchronized]
     public abstract class ViewModelKeyedCollection<TKey, TModel, TViewModel>  : AdvisableKeyedCollection<TKey,TViewModel>
     {
-        [Reference]
         public AdvisableCollection<TModel> Model { get; }
 
         public ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)

@@ -11,11 +11,9 @@ using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading
 {
-    [ReaderWriterSynchronized]
     [NotifyPropertyChanged]
     internal class Board
     {
-        [Child(ItemsRelationship = RelationshipKind.Child)]
         public CreatureCollection Creatures { get; } = new CreatureCollection();
 
         public Board()

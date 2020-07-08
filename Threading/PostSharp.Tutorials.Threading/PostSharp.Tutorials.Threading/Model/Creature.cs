@@ -5,7 +5,6 @@ using System;
 
 namespace PostSharp.Tutorials.Threading
 {
-    [ReaderWriterSynchronized]
     [NotifyPropertyChanged( PreventFalsePositives = true ) ]
     public class Creature
     {
@@ -24,7 +23,6 @@ namespace PostSharp.Tutorials.Threading
         public string Color { get; set; }
 
 
-        [Writer]
         public bool TryMove(double step)
         {
             double radians = 2 * Math.PI * this.Orientation / 360.0;
@@ -33,20 +31,17 @@ namespace PostSharp.Tutorials.Threading
         }
 
 
-        [Writer]
         public void Rotate(double degrees)
         {
             this.Orientation += degrees;
         }
 
-        [Writer]
         public void MoveTo([Range(-10, 10)] double x, [Range(-10, 10)] double y)
         {
             this.X = x;
             this.Y = y;
         }
 
-        [Writer]
         public bool TryMoveTo(double x, double y)
         {
             if ( x < -10 || x > 10 || y < -10 || y > 10 )

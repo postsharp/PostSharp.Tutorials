@@ -23,16 +23,13 @@ namespace PostSharp.Tutorials.Threading
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [NotifyPropertyChanged]
-    [ThreadAffine]
     public partial class MainWindow : Window
     {
-        [Reference]
         Random random = new Random();
 
         [SafeForDependencyAnalysis]
         private BoardViewModel Board => (BoardViewModel)this.DataContext;
 
-        [Reference]
         private IConnection connection;
 
         public MainWindow()
@@ -115,7 +112,6 @@ namespace PostSharp.Tutorials.Threading
 
         }
 
-        [Dispatched]
         private void OnConnectionClosed(object sender, EventArgs e)
         {
             this.connection = null;

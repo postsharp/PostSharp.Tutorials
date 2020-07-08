@@ -15,10 +15,8 @@ namespace PostSharp.Tutorials.Threading.Communication
     
     internal static class BoardService 
     {
-        [ExplicitlySynchronized]
         private static Board board;
 
-        [ExplicitlySynchronized]
         private static readonly ConcurrentDictionary<Guid, WeakReference<Session>> sessions = new ConcurrentDictionary<Guid, WeakReference<Session>>();
 
         public static IConnection StartService(Board board)
@@ -106,7 +104,6 @@ namespace PostSharp.Tutorials.Threading.Communication
 
 
 
-        [Background]
         private static void ForEachSession(Action<Session> action)
         {
             foreach (var entry in sessions)
@@ -137,12 +134,10 @@ namespace PostSharp.Tutorials.Threading.Communication
 
 
 
-        [Immutable]
         [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
         class Session : IBoardService
         {
 
-            [Reference]
             public IBoardCallback Callback { get; }
 
             private readonly Guid guid = Guid.NewGuid();
@@ -186,10 +181,8 @@ namespace PostSharp.Tutorials.Threading.Communication
           
         }
 
-        [Immutable]
         class Connection : IConnection
         {
-            [Reference]
             private ServiceHost host;
 
             public Connection(ServiceHost host)

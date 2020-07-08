@@ -6,16 +6,13 @@ using System.Windows.Media;
 
 namespace PostSharp.Tutorials.Threading
 {
-    [Synchronized]
     internal class RandomGenerator
     {
 
         public static readonly RandomGenerator Instance = new RandomGenerator();
 
-        [Reference]
         readonly Random random = new Random();
 
-        [Reference]
         readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
 
         public string GetRandomColor()
