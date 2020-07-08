@@ -142,7 +142,6 @@ namespace PostSharp.Tutorials.Threading.Communication
         class Session : IBoardService
         {
 
-            [Reference]
             public IBoardCallback Callback { get; }
 
             private readonly Guid guid = Guid.NewGuid();
@@ -189,7 +188,6 @@ namespace PostSharp.Tutorials.Threading.Communication
         [Immutable]
         class Connection : IConnection
         {
-            [Reference]
             private ServiceHost host;
 
             public Connection(ServiceHost host)

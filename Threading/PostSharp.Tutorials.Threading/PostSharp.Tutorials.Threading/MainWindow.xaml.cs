@@ -26,13 +26,11 @@ namespace PostSharp.Tutorials.Threading
     [ThreadAffine]
     public partial class MainWindow : Window
     {
-        [Reference]
         Random random = new Random();
 
         [SafeForDependencyAnalysis]
         private BoardViewModel Board => (BoardViewModel)this.DataContext;
 
-        [Reference]
         private IConnection connection;
 
         public MainWindow()

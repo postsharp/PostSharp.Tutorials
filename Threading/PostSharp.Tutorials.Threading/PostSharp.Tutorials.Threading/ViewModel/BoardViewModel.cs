@@ -13,7 +13,6 @@ namespace PostSharp.Tutorials.Threading
         [Child( ItemsRelationship = RelationshipKind.Child )]
         public CreatureViewModelCollection Creatures { get; }
 
-        [Reference]
         public CreatureViewModel SelectedCreature { get; set; }
 
         public BoardViewModel()

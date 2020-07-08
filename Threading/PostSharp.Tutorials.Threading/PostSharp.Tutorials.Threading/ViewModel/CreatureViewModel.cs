@@ -12,10 +12,8 @@ namespace PostSharp.Tutorials.Threading
     {
         private static readonly BrushConverter brushConverter = new BrushConverter();
 
-        [Reference]
         private readonly BoardViewModel board;
 
-        [Reference]
         public Creature Creature { get; }
 
         public CreatureViewModel([Required] Creature creature, [Required] BoardViewModel board)

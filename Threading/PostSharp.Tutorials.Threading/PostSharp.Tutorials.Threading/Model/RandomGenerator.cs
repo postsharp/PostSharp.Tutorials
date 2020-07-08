@@ -12,11 +12,9 @@ namespace PostSharp.Tutorials.Threading
 
         public static readonly RandomGenerator Instance = new RandomGenerator();
 
-        [Reference]
-        readonly Random random = new Random();
+        private readonly Random random = new Random();
 
-        [Reference]
-        readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
+        private readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
 
         public string GetRandomColor()
         {

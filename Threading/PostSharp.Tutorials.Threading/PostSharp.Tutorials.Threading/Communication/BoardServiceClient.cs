@@ -20,10 +20,8 @@ namespace PostSharp.Tutorials.Threading.Communication
     [Immutable]
     internal class BoardServiceClient : IBoardCallback, IConnection
     {
-        [Reference]
         private readonly Board board;
 
-        [Reference]
         private IBoardService serviceProxy;
 
         public event EventHandler Closed;
