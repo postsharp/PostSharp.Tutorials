@@ -1,0 +1,69 @@
+﻿<Window x:Class="PostSharp.Tutorials.Threading.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PostSharp.Tutorials.Threading"
+        mc:Ignorable="d"
+        x:Name="Window"
+        Title="MainWindow" Height="569.333" Width="607.334">
+    <Window.DataContext>
+        <local:BoardViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding MoveForwardCommand, ElementName=Window}" Key="Up"/>
+        <KeyBinding Command="{Binding MoveBackwardCommand, ElementName=Window}" Key="Down"/>
+        <KeyBinding Command="{Binding RotatePositiveCommand, ElementName=Window}" Key="Right"/>
+        <KeyBinding Command="{Binding RotateNegativeCommand, ElementName=Window}" Key="Left"/>
+    </Window.InputBindings>
+
+    <DockPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0 10 0 10" HorizontalAlignment="Center">
+            <Button Command="{Binding AddCreatureCommand, ElementName=Window}">Add Creature</Button>
+            <Button Command="{Binding ConnectAsServerCommand, ElementName=Window}" Margin="10 0 0 0" >Connect As Server</Button>
+            <Button Command="{Binding ConnectAsClientCommand, ElementName=Window}" Margin="10 0 0 0" >Connect As Client</Button>
+            <Button Command="{Binding DisconnectCommand, ElementName=Window}" Margin="10 0 0 0" >Disconnect</Button>
+        </StackPanel>
+
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10 10 10 10" FontSize="14">
+            To move a creature, click on it, then use the arrow keys on your keyboard. 
+            You can connect several instances of the application. Start the first as the server, and the next as clients.
+        </TextBlock>
+
+        <ItemsControl ItemsSource="{Binding Creatures}" RenderTransformOrigin="0.5,0.5">
+            
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="4" Opacity="{Binding Opacity}" Width="25" Height="20" MouseLeftButtonDown="Creature_MouseLeftButtonDown">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="{Binding Orientation}" CenterX="10" CenterY="12.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray" Margin="20" Width="400" Height="400" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+
+    </DockPanel>
+
+</Window>
