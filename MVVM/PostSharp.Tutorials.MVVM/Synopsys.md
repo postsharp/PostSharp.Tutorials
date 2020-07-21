@@ -31,10 +31,12 @@ The following steps are temporary bug workaround:
     (The point is to say that `INotifyPropertyChanged` has not been implemented)
   * Close the application.
 
-* Open the file `Model/AddressModel.cs` and use post-production rectangles to highlight the expression `Customer.PrincipalAddress?.FullAddress?`.
+* Open the file `Model/AddressModel.cs` and show the `FullAddress` property using a post-production rectangle.
   (The point is to say that we support computed properties.)
 
-* Open the file `ViewModel/CustomerViewModel.cs` and show the `LabelContent` property using a post-production rectangle.
+
+* Open the file `ViewModel/CustomerViewModel.cs` and show the `LabelContent` property and use post-production 
+  rectangles to highlight the expression `Customer.PrincipalAddress?.FullAddress?`. 
   (The point is to say that we support dependencies to children object.)
 
 * Open the file `Model/ModelBase.cs`. Place the caret inside the `ModelBase` class name. Click on the brush icon, choose _Implement INotifyPropertyChanged_. Go through the wizard.
