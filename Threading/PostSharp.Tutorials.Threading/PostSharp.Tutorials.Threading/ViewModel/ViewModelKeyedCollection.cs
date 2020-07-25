@@ -1,20 +1,19 @@
-﻿using PostSharp.Patterns.Collections;
-using PostSharp.Patterns.Contracts;
-using System;
+﻿using System;
 using System.Collections.Specialized;
+using PostSharp.Patterns.Collections;
+using PostSharp.Patterns.Contracts;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.ViewModel
 {
-    public abstract class ViewModelKeyedCollection<TKey, TModel, TViewModel>  : AdvisableKeyedCollection<TKey,TViewModel>
+    public abstract class ViewModelKeyedCollection<TKey, TModel, TViewModel>  : AdvisableKeyedCollection<TKey,TViewModel>, IViewModel<AdvisableCollection<TModel>>
     {
         public AdvisableCollection<TModel> Model { get; }
 
-        public ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)
+        protected ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)
         {
             this.Model = model;
 
             model.CollectionChanged += this.OnModelCollectionChanged;
-
         }
 
         protected void AddFromModel()
@@ -24,6 +23,8 @@ namespace PostSharp.Tutorials.Threading
                 this.Add(this.CreateViewModel(modelItem));
             }
         }
+
+        protected abstract TKey GetKeyForModelItem(TModel modelItem);
 
         protected abstract TViewModel CreateViewModel( TModel modelItem );
 
@@ -39,6 +40,16 @@ namespace PostSharp.Tutorials.Threading
                     foreach (TModel modelItem in e.NewItems)
                     {
                         this.Add(this.CreateViewModel(modelItem));
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (TModel modelItem in e.OldItems)
+                    {
+                        if (this.TryGetValue(this.GetKeyForModelItem(modelItem), out var item))
+                        {
+                            this.Remove(item);
+                        }
                     }
                     break;
 

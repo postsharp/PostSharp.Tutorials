@@ -1,4 +1,4 @@
-﻿namespace PostSharp.Tutorials.Threading
+﻿namespace PostSharp.Tutorials.Threading.Model
 {
     public readonly struct Position
     {

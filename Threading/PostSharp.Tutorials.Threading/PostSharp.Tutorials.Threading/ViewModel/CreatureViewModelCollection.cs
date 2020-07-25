@@ -1,8 +1,9 @@
-﻿using PostSharp.Patterns.Collections;
+﻿using System;
+using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
-using System;
+using PostSharp.Tutorials.Threading.Model;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.ViewModel
 {
     internal class CreatureViewModelCollection : ViewModelKeyedCollection<Guid, Creature, CreatureViewModel>
     {
@@ -19,7 +20,9 @@ namespace PostSharp.Tutorials.Threading
          => new CreatureViewModel(modelItem, this.board);
 
         protected override Guid GetKeyForItem(CreatureViewModel item) => item.Id;
-       
+
+        protected override Guid GetKeyForModelItem(Creature modelItem) => modelItem.Id;
+        
     }
 
 }

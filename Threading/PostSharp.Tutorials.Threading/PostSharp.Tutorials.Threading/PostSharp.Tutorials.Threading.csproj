@@ -36,6 +36,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <!--
+    <Reference Include="PostSharp.Patterns.Aggregation, Version=6.7.5.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078">
+      <HintPath>..\..\..\..\postsharp\Public\Patterns\Build\bin\Debug\net45\PostSharp.Patterns.Aggregation.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=6.7.5.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078">
+      <HintPath>..\..\..\..\postsharp\Public\Patterns\Build\bin\Debug\net45\PostSharp.Patterns.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Model, Version=6.7.5.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078">
+      <HintPath>..\..\..\..\postsharp\Public\Patterns\Build\bin\Debug\net40\PostSharp.Patterns.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading, Version=6.7.5.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078">
+      <HintPath>..\..\..\..\postsharp\Public\Patterns\Build\bin\Debug\net45\PostSharp.Patterns.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Xaml, Version=6.7.5.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078">
+      <HintPath>..\..\..\..\postsharp\Public\Patterns\Build\bin\Debug\net40\PostSharp.Patterns.Xaml.dll</HintPath>
+    </Reference>
+    -->
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -60,8 +77,10 @@
     </ApplicationDefinition>
     <Compile Include="Communication\BoardService.cs" />
     <Compile Include="Communication\BoardServiceClient.cs" />
+    <Compile Include="Communication\BoardServiceSession.cs" />
     <Compile Include="Communication\IBoardCallback.cs" />
     <Compile Include="Communication\IBoardService.cs" />
+    <Compile Include="Communication\IConnection.cs" />
     <Compile Include="Model\CreatureCollection.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Model\RandomGenerator.cs" />
@@ -69,6 +88,7 @@
     <Compile Include="Model\Creature.cs" />
     <Compile Include="ViewModel\CreatureViewModel.cs" />
     <Compile Include="ViewModel\CreatureViewModelCollection.cs" />
+    <Compile Include="ViewModel\IViewModel.cs" />
     <Compile Include="ViewModel\ViewModelKeyedCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -112,11 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PostSharp">
-      <Version>6.7.4-preview</Version>
+      <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Model">
-      <Version>6.7.4-preview</Version>
+      <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
+	
     <PackageReference Include="PostSharp.Patterns.Xaml">
       <Version>6.6.10-b7f224</Version>
     </PackageReference>

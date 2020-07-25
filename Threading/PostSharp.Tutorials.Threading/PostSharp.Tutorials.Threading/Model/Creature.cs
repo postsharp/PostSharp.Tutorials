@@ -1,8 +1,8 @@
-﻿using PostSharp.Patterns.Contracts;
+﻿using System;
+using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
-using System;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.Model
 {
 
     [NotifyPropertyChanged( PreventFalsePositives = true ) ]

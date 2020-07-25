@@ -5,14 +5,10 @@ using System.ComponentModel;
 using System.Configuration;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
+using PostSharp.Tutorials.Threading.Model;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
-    internal interface IConnection
-    {
-        event EventHandler Closed;
-        void Close();
-    }
 
     internal class BoardServiceClient : IBoardCallback, IConnection
     {
@@ -75,7 +71,23 @@ namespace PostSharp.Tutorials.Threading.Communication
             }
         }
 
+
         private void Subscribe(Creature creature)
+        {
+            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
+        }
+
+
+        private void Unsubscribe(IEnumerable<Creature> creatures)
+        {
+            foreach (var creature in creatures)
+            {
+                this.Unsubscribe(creature);
+            }
+        }
+
+
+        private void Unsubscribe(Creature creature)
         {
             Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
@@ -127,6 +139,21 @@ namespace PostSharp.Tutorials.Threading.Communication
                     }
                     break;
 
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (Creature creature in e.OldItems)
+                    {
+                        try
+                        {
+                            this.serviceProxy.DeleteCreature(creature.Id);
+                        }
+                        catch
+                        {
+
+                        }
+                        this.Unsubscribe(creature);
+                    }
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -140,7 +167,7 @@ namespace PostSharp.Tutorials.Threading.Communication
             }
         }
 
-        public void OnCreatureRotated(Guid id, double orientation)
+        void IBoardCallback.OnCreatureRotated(Guid id, double orientation)
         {
             if (this.board.Creatures.TryGetValue(id, out var creature))
             {
@@ -154,15 +181,25 @@ namespace PostSharp.Tutorials.Threading.Communication
             {
                 this.board.Creatures.Add(creature);
                 this.Subscribe(creature);
+            }
+        }
 
+        void IBoardCallback.OnCreatureDeleted(Guid id)
+        {
+            if (this.board.Creatures.TryGetValue(id, out var creature))
+            {
+                this.board.Creatures.Remove(creature);
+                this.Unsubscribe(creature);
             }
         }
 
         public void Close()
         {
-            ((IClientChannel) this.serviceProxy).Open();
+            ((IClientChannel) this.serviceProxy).Close();
+            this.Unsubscribe(this.board.Creatures);
+            this.board.Creatures.CollectionChanged -= this.OnCollectionChanged;
         }
 
-       
+     
     }
 }

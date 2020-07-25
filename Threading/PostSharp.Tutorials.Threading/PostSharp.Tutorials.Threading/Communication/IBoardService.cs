@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using PostSharp.Tutorials.Threading.Model;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
@@ -16,6 +17,9 @@ namespace PostSharp.Tutorials.Threading.Communication
 
         [OperationContract(IsOneWay = true)]
         void CreateCreature(Creature creature);
+
+        [OperationContract(IsOneWay = true)]
+        void DeleteCreature(Guid id);
 
         [OperationContract]
         List<Creature> GetCreatures();

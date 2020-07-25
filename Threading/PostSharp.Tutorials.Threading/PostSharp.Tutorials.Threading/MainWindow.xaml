@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PostSharp.Tutorials.Threading"
+        xmlns:viewModel="clr-namespace:PostSharp.Tutorials.Threading.ViewModel"
         mc:Ignorable="d"
         x:Name="Window"
         Title="Creature Board" Height="630" Width="659.334">
     <Window.DataContext>
-        <local:BoardViewModel/>
+        <viewModel:BoardViewModel/>
     </Window.DataContext>
     <Window.Resources>
 
@@ -18,6 +19,7 @@
         <KeyBinding Command="{Binding MoveBackwardCommand, ElementName=Window}" Key="Down"/>
         <KeyBinding Command="{Binding RotatePositiveCommand, ElementName=Window}" Key="Right"/>
         <KeyBinding Command="{Binding RotateNegativeCommand, ElementName=Window}" Key="Left"/>
+        <KeyBinding Command="{Binding DeleteCommand, ElementName=Window}" Key="Delete"/>
     </Window.InputBindings>
 
     <DockPanel>
@@ -29,8 +31,9 @@
             <Button Command="{Binding DisconnectCommand, ElementName=Window}" Margin="10 0 0 0" >Disconnect</Button>
         </StackPanel>
 
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10 10 10 10" FontSize="14">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20 10 20 10" FontSize="14">
             To move a creature, click on it, then use the arrow keys on your keyboard. 
+            To delete it, press Delete.
             You can connect several instances of the application. Start the first as the server, and the next as clients.
         </TextBlock>
 
