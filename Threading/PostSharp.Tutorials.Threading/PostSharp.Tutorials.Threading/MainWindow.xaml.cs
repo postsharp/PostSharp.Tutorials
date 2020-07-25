@@ -6,6 +6,8 @@ using PostSharp.Patterns.Xaml;
 using PostSharp.Patterns.Model;
 using PostSharp.Tutorials.Threading.Communication;
 using PostSharp.Patterns.Threading;
+using PostSharp.Tutorials.Threading.Model;
+using PostSharp.Tutorials.Threading.ViewModel;
 
 namespace PostSharp.Tutorials.Threading
 {
@@ -39,22 +41,36 @@ namespace PostSharp.Tutorials.Threading
         [Command]
         public ICommand MoveForwardCommand { get; private set; }
 
-        private void MoveForward() => this.Board.SelectedCreature?.Creature.TryMove(step);
+        private void MoveForward() => this.Board.SelectedCreature?.Model.TryMove(step);
 
         [Command]
         public ICommand MoveBackwardCommand { get; private set; }
 
-        private void MoveBackward() => this.Board.SelectedCreature?.Creature.TryMove(-step);
+        private void MoveBackward() => this.Board.SelectedCreature?.Model.TryMove(-step);
 
         [Command]
         public ICommand RotatePositiveCommand { get; private set; }
 
-        private void RotatePositive() => this.Board.SelectedCreature?.Creature.Rotate(15);
+        private void RotatePositive() => this.Board.SelectedCreature?.Model.Rotate(15);
 
         [Command]
         public ICommand RotateNegativeCommand { get; private set; }
 
-        private void RotateNegative() => this.Board.SelectedCreature?.Creature.Rotate(-15);
+        private void RotateNegative() => this.Board.SelectedCreature?.Model.Rotate(-15);
+
+        [Command]
+        public ICommand DeleteCommand
+        {
+            get; private set;
+        }
+
+        private void Delete() 
+        {
+            if (this.Board.SelectedCreature != null)
+            {
+                this.Board.Model.Creatures.Remove(this.Board.SelectedCreature.Model);
+            }
+        }
 
         [Command]
         public ICommand ConnectAsServerCommand { get; private set; }
@@ -63,7 +79,7 @@ namespace PostSharp.Tutorials.Threading
         private void ConnectAsServer()
         {
 
-            this.SetConnection(BoardService.StartService(this.Board.Board));
+            this.SetConnection(BoardService.StartService(this.Board.Model));
 
             this.Title += " (server)";
         }
@@ -78,7 +94,8 @@ namespace PostSharp.Tutorials.Threading
 
         private void ConnectAsClient()
         {
-            this.SetConnection(BoardServiceClient.Connect(this.Board.Board));
+            this.Board.Model.IsMaster = false;
+            this.SetConnection(BoardServiceClient.Connect(this.Board.Model));
             
 
             this.Title += " (client)";
@@ -90,7 +107,11 @@ namespace PostSharp.Tutorials.Threading
 
         public bool CanExecuteDisconnect => this.connection != null;
 
-        private void Disconnect() => this.connection?.Close();
+        private void Disconnect()
+        {
+            this.connection?.Close();
+            this.Board.Model.IsMaster = true;
+        }
 
         private void SetConnection( IConnection connection )
         {
@@ -113,7 +134,7 @@ namespace PostSharp.Tutorials.Threading
         private void AddCreature()
         {
             var creature = RandomGenerator.Instance.CreateCreature();
-            this.Board.Board.Creatures.Add(creature);
+            this.Board.Model.Creatures.Add(creature);
             this.Board.SelectedCreature = this.Board.Creatures[creature.Id];
         }
 

@@ -1,4 +1,5 @@
-﻿using PostSharp.Patterns.Threading;
+﻿using PostSharp.Patterns.Collections;
+using PostSharp.Patterns.Threading;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -8,65 +9,105 @@ using System.Configuration;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
+using System.Threading.Tasks;
+using PostSharp.Tutorials.Threading.Model;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
+  
 
-    internal static class BoardService 
+    [Immutable]
+    internal class BoardService : ServiceHost, IConnection
     {
-        [ExplicitlySynchronized]
-        private static Board board;
+        public Board Board { get; }
+        
+        // Using a ConcurrentDictionary within an Immutable class is the best choice here. An alternative design would
+        // be to have a [ReaderWriterSynchronized] model on BoardService, but this would result in higher complexity
+        // and higher thread contention.
+        private readonly ConcurrentDictionary<Guid, BoardServiceSession> sessions = new ConcurrentDictionary<Guid, BoardServiceSession>();
 
-        [ExplicitlySynchronized]
-        private static readonly ConcurrentDictionary<Guid, WeakReference<Session>> sessions = new ConcurrentDictionary<Guid, WeakReference<Session>>();
 
-        public static IConnection StartService(Board board)
+        private BoardService(Board board, string baseAddress) : base(typeof(BoardServiceSession), new[] { new Uri(baseAddress) } )
         {
+            this.Board = board;
 
-            BoardService.board = board;
-            board.Creatures.CollectionChanged += OnCreaturesCollectionChanged;
-            Subscribe(board.Creatures);
+            board.Creatures.CollectionChanged += this.OnCreaturesCollectionChanged;
+            this.Subscribe(board.Creatures);
+        }
 
+        internal void AddSession(BoardServiceSession session)
+        {
+            this.sessions.TryAdd(session.Id, session);
+        }
+
+        internal void RemoveSession(Guid sessionId)
+        {
+            this.sessions.TryRemove(sessionId, out _ );
+        }
+
+        public static BoardService StartService(Board board)
+        {
             var group = ServiceModelSectionGroup.GetSectionGroup(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
             var service = group.Services.Services[0];
             var baseAddress = service.Endpoints[0].Address.AbsoluteUri.Replace(service.Endpoints[0].Address.AbsolutePath, String.Empty);
 
 
-            var host = new ServiceHost(typeof(Session), new[] { new Uri(baseAddress) });
+            var serviceHost = new BoardService(board, baseAddress);
 
-            host.AddServiceEndpoint(typeof(IBoardService),
+            serviceHost.AddServiceEndpoint(typeof(IBoardService),
                                     new NetNamedPipeBinding(),
                                     service.Endpoints[0].Address.AbsolutePath);
-            host.Open();
+            serviceHost.Open();
 
+            return serviceHost;
 
-            return new Connection(host);
         }
 
 
-        private static void Subscribe(IEnumerable<Creature> creatures)
+        private void Subscribe(IEnumerable<Creature> creatures)
         {
             foreach (var creature in creatures)
             {
-                Subscribe(creature);
+                this.Subscribe(creature);
             }
         }
 
-        private static void Subscribe(Creature creature)
+        private void Subscribe(Creature creature)
         {
-            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += OnCreaturePropertyChanged;
+            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
+        }
+
+        private void Unsubscribe(IEnumerable<Creature> creatures)
+        {
+            foreach (var creature in creatures)
+            {
+                this.Unsubscribe(creature);
+            }
+        }
+
+        private void Unsubscribe(Creature creature)
+        {
+            Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
 
         [Background]
-        private static void OnCreaturesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCreaturesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    Subscribe(e.NewItems.Cast<Creature>());
+                    this.Subscribe(e.NewItems.Cast<Creature>());
                     foreach (Creature creature in e.NewItems)
                     {
-                        ForEachSession(session => session.Callback.OnCreatureCreated(creature));
+                        this.InvokeCallback(callback => callback.OnCreatureCreated(creature));
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    this.Unsubscribe(e.OldItems.Cast<Creature>());
+                    foreach (Creature creature in e.OldItems)
+                    {
+                        this.InvokeCallback(callback => callback.OnCreatureDeleted(creature.Id));
                     }
                     break;
 
@@ -76,139 +117,58 @@ namespace PostSharp.Tutorials.Threading.Communication
         }
 
         [Background]
-        private static void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var creature = (Creature)sender;
 
-            try
+            switch (e.PropertyName)
             {
+                case "Position":
+                    this.InvokeCallback(callback =>
+                        {
+                            var position = creature.Position;
 
-                switch (e.PropertyName)
-                {
-                    case "Position":
-                        ForEachSession(session =>
-                            {
-                                var position = creature.Position;
+                            callback.OnCreatureMoved(creature.Id, position.X, position.Y);
+                        });
+                    break;
 
-                                session.Callback.OnCreatureMoved(creature.Id, position.X, position.Y);
-                            });
-                        break;
-
-                    case "Orientation":
-                        ForEachSession(session => session.Callback.OnCreatureRotated(creature.Id, creature.Orientation));
-                        break;
-
-                }
+                case "Orientation":
+                    this.InvokeCallback(callback => callback.OnCreatureRotated(creature.Id, creature.Orientation));
+                    break;
 
             }
-            catch
-            {
 
-            }
         }
 
 
-
-
-        [Background]
-        private static void ForEachSession(Action<Session> action)
+        private void InvokeCallback(Action<IBoardCallback> action)
         {
-            foreach (var entry in sessions)
+            foreach (var entry in this.sessions)
             {
-                var remove = false;
-                if (entry.Value.TryGetTarget(out var session))
+                // We can invoke each client in parallel.
+                Task.Run(() =>
                 {
                     try
                     {
-                        action(session);
+                        action(entry.Value.Callback);
                     }
                     catch (Exception)
                     {
-                        remove = true;
+                        this.RemoveSession(entry.Key);
                     }
-                }
-                else
-                {
-                    remove = true;
-                }
+                });
 
-                if (remove)
-                {
-                    sessions.TryRemove(entry.Key, out _);
-                }
+
             }
         }
 
-
-
-        [Immutable]
-        [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
-        class Session : IBoardService
+        public new void Close()
         {
-
-            public IBoardCallback Callback { get; }
-
-            private readonly Guid guid = Guid.NewGuid();
-
-            public Session()
-            {
-                this.Callback = OperationContext.Current.GetCallbackChannel<IBoardCallback>();
-                
-
-                sessions.TryAdd(this.guid, new WeakReference<Session>(this));
-            }
-
-
-
-            public List<Creature> GetCreatures()
-            {
-                return board.Creatures.ToList();
-            }
-
-            public void MoveCreatureTo(Guid id, double x, double y)
-            {
-                var creature = board.Creatures[id];
-                creature.MoveTo(x, y);
-            }
-
-            public void RotateCreatureTo(Guid id, double angle)
-            {
-                var creature = board.Creatures[id];
-                creature.Orientation = angle;
-            }
-
-            public void CreateCreature(Creature creature)
-            {
-                if (!board.Creatures.Contains(creature.Id))
-                {
-                    board.Creatures.Add(creature);
-                    Subscribe(creature);
-                }
-            }
-
-          
-        }
-
-        [Immutable]
-        class Connection : IConnection
-        {
-            private readonly ServiceHost host;
-
-            public Connection(ServiceHost host)
-            {
-                this.host = host;
-            }
-
-
-            public void Close()
-            {
-                this.host.Close();
-            }
-
-#pragma warning disable CS0067
-            public event EventHandler Closed;
-
+            base.Close();
+            this.Unsubscribe(this.Board.Creatures);
+            this.Board.Creatures.CollectionChanged -= this.OnCreaturesCollectionChanged;
         }
 
     }
+
 }

@@ -1,9 +1,9 @@
-﻿using PostSharp.Patterns.Threading;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Media;
+using PostSharp.Patterns.Threading;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.Model
 {
     [Synchronized]
     internal class RandomGenerator

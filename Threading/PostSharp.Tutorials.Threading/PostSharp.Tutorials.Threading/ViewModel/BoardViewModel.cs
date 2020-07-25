@@ -1,14 +1,12 @@
 ﻿using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Threading;
+using PostSharp.Tutorials.Threading.Model;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.ViewModel
 {
-    [ReaderWriterSynchronized]
     [NotifyPropertyChanged]
-    internal class BoardViewModel
+    internal class BoardViewModel : IViewModel<Board>
     {
-        [Child]
-        public Board Board { get; } = new Board();
+        public Board Model { get; } = new Board();
 
         [Child( ItemsRelationship = RelationshipKind.Child )]
         public CreatureViewModelCollection Creatures { get; }
@@ -17,7 +15,7 @@ namespace PostSharp.Tutorials.Threading
 
         public BoardViewModel()
         {
-            this.Creatures = new CreatureViewModelCollection(this.Board.Creatures, this);
+            this.Creatures = new CreatureViewModelCollection(this.Model.Creatures, this);
         }
     }
 }

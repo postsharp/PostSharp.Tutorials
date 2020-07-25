@@ -1,11 +1,10 @@
-﻿using PostSharp.Patterns.Collections;
+﻿using System;
+using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Threading;
-using System;
+using PostSharp.Tutorials.Threading.Model;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.ViewModel
 {
-    [ReaderWriterSynchronized]
     internal class CreatureViewModelCollection : ViewModelKeyedCollection<Guid, Creature, CreatureViewModel>
     {
         private readonly BoardViewModel board;
@@ -17,13 +16,13 @@ namespace PostSharp.Tutorials.Threading
             this.AddFromModel();
         }
 
-        [Reader]
         protected override CreatureViewModel CreateViewModel(Creature modelItem)
          => new CreatureViewModel(modelItem, this.board);
 
-        [Reader]
         protected override Guid GetKeyForItem(CreatureViewModel item) => item.Id;
-       
+
+        protected override Guid GetKeyForModelItem(Creature modelItem) => modelItem.Id;
+        
     }
 
 }
