@@ -10,7 +10,7 @@
 
 Building a XAML or WinForms app traditionally required you to write a lot of boilerplate code, especially for data binding. PostSharp MVVM almost completely eliminates this frustration and gives you back your time for something more meaningful.
 
-Here is a simple contact editor. If you modify the street number for some address, you can see that the change is not propagated to the list. This is because the classes don't implement the `INotifyPropertyChanged` interface yet. 
+Here is a simple contact editor. If you modify the street number for an address, you can see that the change is not propagated to the list. This is because the classes don't implement the `INotifyPropertyChanged` interface yet. 
 
 Let's look at the code. There are only two model classes: customer and address. The address class has a _computed property_ named `FullAddress` which contains all other properties. The view-model class has an even more complex computed property: `LabelContent`. It depends on a property _of a property_ **of a property**. Because of these recursive dependencies on child objects, implementing `INotifyPropertyChanged` manually would be extremely cumbersome. Let's see how this can be done with PostSharp.
 
@@ -47,7 +47,7 @@ Now go to the XAML code and bind the button to the new command property.
 
 We're done!
 
-The button now does what it's meant to do, and it is dynamically disabled or enabled as it should.
+The button now does what it's meant to do, and it is dynamically disabled or enabled as it should be.
 
 Finally,  let's  add some validation to this form. We want the _Town_ field to be a required one.
 
