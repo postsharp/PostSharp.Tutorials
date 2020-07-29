@@ -96,6 +96,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Board.cs" />
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -119,6 +122,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Synopsis.md" />
+    <None Include="Voiceover.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -130,7 +135,6 @@
     <PackageReference Include="PostSharp.Patterns.Model">
       <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
-	
     <PackageReference Include="PostSharp.Patterns.Threading">
       <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
@@ -140,6 +144,12 @@
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="View\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
