@@ -24,7 +24,7 @@ namespace PostSharp.Tutorials.Threading.Communication
 
             this.Connect();
 
-            this.board.Creatures.CollectionChanged += this.OnCollectionChanged;
+            this.board.Creatures.CollectionChanged += this.OnCreatureCollectionChanged;
 
             this.Subscribe(this.board.Creatures);
         }
@@ -120,7 +120,7 @@ namespace PostSharp.Tutorials.Threading.Communication
       
         }
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCreatureCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch ( e.Action )
             {
@@ -197,7 +197,7 @@ namespace PostSharp.Tutorials.Threading.Communication
         {
             ((IClientChannel) this.serviceProxy).Close();
             this.Unsubscribe(this.board.Creatures);
-            this.board.Creatures.CollectionChanged -= this.OnCollectionChanged;
+            this.board.Creatures.CollectionChanged -= this.OnCreatureCollectionChanged;
         }
 
      

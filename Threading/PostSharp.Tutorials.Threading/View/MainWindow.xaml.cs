@@ -8,7 +8,7 @@ using PostSharp.Tutorials.Threading.Communication;
 using PostSharp.Tutorials.Threading.Model;
 using PostSharp.Tutorials.Threading.ViewModel;
 
-namespace PostSharp.Tutorials.Threading
+namespace PostSharp.Tutorials.Threading.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

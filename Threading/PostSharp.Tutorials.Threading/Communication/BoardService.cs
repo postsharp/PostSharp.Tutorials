@@ -8,6 +8,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Model;
 using PostSharp.Tutorials.Threading.Model;
 
 namespace PostSharp.Tutorials.Threading.Communication
@@ -20,10 +21,11 @@ namespace PostSharp.Tutorials.Threading.Communication
         
         // be to have a [ReaderWriterSynchronized] model on BoardService, but this would result in higher complexity
         // and higher thread contention.
+        [Reference]
         private readonly ConcurrentDictionary<Guid, BoardServiceSession> sessions = new ConcurrentDictionary<Guid, BoardServiceSession>();
 
 
-        private BoardService(Board board, string baseAddress) : base(typeof(BoardServiceSession), new[] { new Uri(baseAddress) } )
+        private BoardService(Board board, string baseAddress) : base(typeof(BoardServiceSession), new Uri(baseAddress))
         {
             this.Board = board;
 

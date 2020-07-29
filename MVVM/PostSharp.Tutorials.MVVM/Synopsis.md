@@ -1,4 +1,4 @@
-# Synopsys
+# Synopsis
 
 ## General Instructions
 
