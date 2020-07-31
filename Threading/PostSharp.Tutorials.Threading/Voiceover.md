@@ -25,19 +25,24 @@ Instead of reasoning about individual fields, we will take decisions about whole
 
 [4]
 
-For the view and the view model, we apply the thread-affine model, which means that only
-the UI thread will have access to these objects. From the moment we take this decision, we can
+For the view and the view model, you can apply the thread-affine model, which means that only
+the UI thread will have access to these objects. From the moment you take this decision, you can
 completely stop thinking about multi-threading in these classes.
 
-[5]
+[5] 
 
-Instead of applying the aspect to every single class, we can apply it on an interface and it
+In all classes assigned to a threading model, you must mark children fields with the `Child` attribute
+so that PostSharp knows they are a part of the same entity. In this class, all fields and properties
+are references.
+
+
+[6]
+
+Instead of applying the aspect to every single class, you can apply it on an interface and it
 will automatically apply to all derived classes.
 
-[6] 
+`Creatures` are children object of `BoardViewModel`, so you can mark it as the `[Child]` attribute.
 
-In all classes assigned to a threading model, we must mark children fields with the `Child` attribute
-so that PostSharp knows they are a part of the same entity.
 
 [7]
 
@@ -78,7 +83,7 @@ Let's run the app and see if it works.
 
 [14]
 
-Oops. This exception means that timer thread is attempting to access the `Board` object but does
+Oops. The `ThreadAccessException` means that timer thread is attempting to access the `Board` object but does
 not hold the proper access right. This is because we did not annotate the `OnTimer` method with the
 `Writer` attribute. 
 
