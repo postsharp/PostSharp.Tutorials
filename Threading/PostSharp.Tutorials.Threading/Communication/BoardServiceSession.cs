@@ -8,7 +8,6 @@ using PostSharp.Tutorials.Threading.Model;
 
 namespace PostSharp.Tutorials.Threading.Communication
 {
-    [Immutable]
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     class BoardServiceSession : IBoardService, IDisposable
     {

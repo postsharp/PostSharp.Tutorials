@@ -5,7 +5,6 @@ using System.Windows.Shapes;
 using PostSharp.Patterns.Xaml;
 using PostSharp.Patterns.Model;
 using PostSharp.Tutorials.Threading.Communication;
-using PostSharp.Patterns.Threading;
 using PostSharp.Tutorials.Threading.Model;
 using PostSharp.Tutorials.Threading.ViewModel;
 
@@ -15,7 +14,6 @@ namespace PostSharp.Tutorials.Threading.View
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [NotifyPropertyChanged]
-    [ThreadAffine]
     public partial class MainWindow : Window
     {
         [SafeForDependencyAnalysis]
@@ -120,7 +118,6 @@ namespace PostSharp.Tutorials.Threading.View
 
         }
 
-        [Dispatched]
         private void OnConnectionClosed(object sender, EventArgs e)
         {
             this.connection = null;
