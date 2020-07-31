@@ -11,10 +11,11 @@
 The following steps are temporary bug workaround:
 
 * In VS, make sure other versions of PostSharp Tools for Visual Studio are uninstalled.
-* Install the VSIX given in the OneDrive folder.
+* Install the VSIX given in the OneDrive folder (this is another one than for the previous video).
 * Download the `*.nupkg` files from OneDrive and copy the directory path to the clipboard.
 * In VS, go to Tools / Options / NuGet Package Manager / Package Sources.
 * Name it say `PostSharp Private` and paste the directory path.
+* Disable PostSharp Assistant in PostSharp Options.
 
 
 ## Step 0. Preparation
@@ -26,7 +27,7 @@ The following steps are temporary bug workaround:
 
  [2]
 
- * Start two instances of the sample application.
+ * Start two instances of the sample application side by side, in such a way that they don't overlap.
  * Connect one as the server.
  * Connect the other as the client.
  * In the first instance, click on a creature and then, using arrows, move it.
@@ -34,31 +35,33 @@ The following steps are temporary bug workaround:
 
  [3]
 
- * Go back to VS and expand all solution folders.
+ * Go back to VS and expand all solution folders (except References and Properties).
 
  [4]
 
  * Open `MainWindow.xaml.cs`, place the caret in the class name, press `Alt+Enter` to open the refactoring menu,
-   choose _Apply threading model_, choose _Thread affine_.
+   choose _Apply threading model_, choose _Thread affine_ and click _Next_.
 
 [5]
 
-* Go to `IViewModel` and do the same.
+* Click _Next_.
 
 [6]
 
-* Go to `BoardViewModel.Creatures` and add this custom attribute: `[Child( ItemsRelationship = RelationshipKind.Child )]`.
+* Go to `IViewModel` and add the '[ThreadAffine]' custom attribute.
+
+* Go to `BoardViewModel.Creatures` and add '[Child]`.
 
 [7]
 
-* Go to `Board` and add the attribute `[ReaderWriterSynchronized]` to the class.
-* Go to `Board.Creatures`  and add the attribute `[Child( ItemsRelationship = RelationshipKind.Child )]`.
+* Go to `Board`, open the refactoring menu with `Alt+Enter`, choose _Apply threading model_, choose _reader-writer synchronized_, click _Next_.
+  For the `Creatures` field, choose _Collection of children_, click _Next_.
 
 [8]
 
 * Go to `Board.Dispose` and add `[Writer]
 * Go to `Creature` and add the attribute `[ReaderWriterSynchronized]` to the class.
-* Go to `Creature.TryMove`  and add the attribute `[Writer]`. Do the same with the next methods: `Rotate`, `MoveTo`, `TryMoveTo`.
+* Add the `[Writer]` attribute to `TryMove`,  `Rotate`, `MoveTo`, `TryMoveTo`.
 
 [9]
 
@@ -76,23 +79,39 @@ The following steps are temporary bug workaround:
 
 * Add `[Immutable]` to BoardService.
 
-* Change the type of `sessions`  to `ConcurrentDictionary<Guid, BoardServiceSession>` and made appropriate changes in source code.
+* Add `[Reference]` to `sessions`.
+
+* Change the type of `sessions`  to `ConcurrentDictionary<Guid, BoardServiceSession>` and made appropriate changes in source code:
+
+```cs
+        internal void AddSession(BoardServiceSession session)
+        {
+            this.sessions.TryAdd(session.Id, session);
+        }
+
+        internal void RemoveSession(Guid sessionId)
+        {
+             this.sessions.TryRemove(sessionId, out _);
+        }
+```
 
 [13]
 
 * Start the app in the debugger.
 
-* Wait for the exception.
+* Wait for the ThreadAccessException in OnTimer.
 
 [14]
 
 [15]
 
+* Stop the debugger.
+
 * Add `[Writer]` to the `OnTimer` method.
 
 [16]
 
-* Go to `MainWindow.xaml.cs` and add `[Writer]` to the `OnConnectionClosed` method.
+* Go to `MainWindow.xaml.cs` and add `[Dispatched(DispatchedExecutionMode.NonBlocking)]` to the `OnConnectionClosed` method.
 
 [17]
 
@@ -114,11 +133,33 @@ The following steps are temporary bug workaround:
 
 * Add `[Synchronized]` on the `RandomGenerator` class.
 
+* Build and show that the warnings have disappeared.
+
 [20]
 
 * Go to `ViewModelKeyedCollection.OnModelCollectionChanged`.
 
-* Remove the code xxx
+* Remove the following lines in the beginning of the method:
+
+```cs
+            void RaiseEvents()
+            {
+```
+
+* Remove this at the end:
+
+```cs
+     }
+
+            if (this.dispatcher.CheckAccess())
+            {
+                RaiseEvents();
+            }
+            else
+            {
+                this.dispatcher.BeginInvoke(new Action(RaiseEvents));
+            }
+```
 
 * Add the attribute to the method: `[Dispatched(DispatchedExecutionMode.NonBlockingContextSwitch)]`.
 
@@ -128,9 +169,9 @@ The following steps are temporary bug workaround:
 
 * Go to `BoardService.OnCreatureCollectionChanged` and add `[Background].
 
-* Go to `BoardClient.OnCreatureCollectionChanged` and add `[Background].
+* Go to `BoardServiceClient.OnCreatureCollectionChanged` and add `[Background].
 
-* Go to `BoardClient.OnCreatureCollectionChanged` and add `[Background].
+* Go to `BoardServiceClient.OnCreatureCollectionChanged` and add `[Background].
 
 [22]
 
