@@ -1,10 +1,12 @@
 ﻿using System;
 using PostSharp.Patterns.Contracts;
 using PostSharp.Patterns.Model;
+using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.Model
 {
 
+    [ReaderWriterSynchronized]
     [NotifyPropertyChanged( PreventFalsePositives = true ) ]
     public class Creature
     {
@@ -25,6 +27,7 @@ namespace PostSharp.Tutorials.Threading.Model
         public string Color { get; set; }
 
 
+        [Writer]
         public bool TryMove(double step)
         {
             var radians = 2 * Math.PI * this.Orientation / 360.0;
@@ -33,17 +36,20 @@ namespace PostSharp.Tutorials.Threading.Model
         }
 
 
+        [Writer]
         public void Rotate(double degrees)
         {
             this.Orientation += degrees;
         }
 
+        [Writer]
         public void MoveTo([Range(-10, 10)] double x, [Range(-10, 10)] double y)
         {
             this.X = x;
             this.Y = y;
         }
 
+        [Writer]
         public bool TryMoveTo(double x, double y)
         {
             if ( x < -10 || x > 10 || y < -10 || y > 10 )

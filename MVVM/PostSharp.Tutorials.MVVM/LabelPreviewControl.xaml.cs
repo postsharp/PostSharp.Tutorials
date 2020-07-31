@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Xaml;
 
 namespace PostSharp.Tutorials.MVVM
 {
@@ -11,6 +13,8 @@ namespace PostSharp.Tutorials.MVVM
         }
 
 
+        [DependencyProperty]
+        [Required]
         public string Text { get; set; }
 
     }

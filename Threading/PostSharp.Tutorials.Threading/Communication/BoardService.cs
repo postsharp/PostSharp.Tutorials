@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PostSharp.Patterns.Collections;
+using PostSharp.Patterns.Threading;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -15,10 +17,12 @@ namespace PostSharp.Tutorials.Threading.Communication
 {
   
 
+    [Immutable]
     internal class BoardService : ServiceHost, IConnection
     {
         public Board Board { get; }
         
+        // Using a ConcurrentDictionary within an Immutable class is the best choice here. An alternative design would
         // be to have a [ReaderWriterSynchronized] model on BoardService, but this would result in higher complexity
         // and higher thread contention.
         [Reference]
@@ -88,6 +92,7 @@ namespace PostSharp.Tutorials.Threading.Communication
             Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
 
+        [Background]
         private void OnCreaturesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -113,6 +118,7 @@ namespace PostSharp.Tutorials.Threading.Communication
             }
         }
 
+        [Background]
         private void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var creature = (Creature)sender;

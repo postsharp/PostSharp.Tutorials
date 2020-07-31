@@ -81,6 +81,7 @@
     <Compile Include="Communication\IBoardCallback.cs" />
     <Compile Include="Communication\IBoardService.cs" />
     <Compile Include="Communication\IConnection.cs" />
+    <Compile Include="GlobalAspects.cs" />
     <Compile Include="Model\CreatureCollection.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Model\RandomGenerator.cs" />
@@ -134,8 +135,11 @@
     <PackageReference Include="PostSharp.Patterns.Model">
       <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
+    <PackageReference Include="PostSharp.Patterns.Threading">
+      <Version>6.7.5-preview-3af16c</Version>
+    </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Xaml">
-      <Version>6.6.10-b7f224</Version>
+      <Version>6.7.5-preview-3af16c</Version>
     </PackageReference>
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>

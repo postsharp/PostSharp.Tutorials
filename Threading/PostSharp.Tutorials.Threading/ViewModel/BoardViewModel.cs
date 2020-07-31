@@ -8,6 +8,7 @@ namespace PostSharp.Tutorials.Threading.ViewModel
     {
         public Board Model { get; } = new Board();
 
+        [Child( ItemsRelationship = RelationshipKind.Child )]
         public CreatureViewModelCollection Creatures { get; }
 
         public CreatureViewModel SelectedCreature { get; set; }

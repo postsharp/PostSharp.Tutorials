@@ -5,6 +5,7 @@ using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.Model
 {
+    [Synchronized]
     internal class RandomGenerator
     {
 

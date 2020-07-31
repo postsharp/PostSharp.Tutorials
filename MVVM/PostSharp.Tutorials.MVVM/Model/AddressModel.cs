@@ -1,17 +1,22 @@
 ﻿using System.Text;
+using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 
 namespace PostSharp.Tutorials.MVVM.Model
 {
     public class AddressModel : ModelBase
     {
+        [Required]
         public string Line1 { get; set; }
 
         public string Line2 { get; set; }
 
+        [Required]
         public string Town { get; set; }
 
         public string Country { get; set; }
 
+        [SafeForDependencyAnalysis]
         public string FullAddress
         {
             get

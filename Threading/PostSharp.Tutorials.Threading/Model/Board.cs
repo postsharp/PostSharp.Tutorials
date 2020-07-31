@@ -6,12 +6,15 @@ using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.Model
 {
+    [ReaderWriterSynchronized]
     [NotifyPropertyChanged]
-    internal class Board
+    internal class Board : IDisposable
     {
-        private readonly Random random = new Random();
         private Timer timer;
+        private readonly Random random = new Random();
+        
 
+        [Child(ItemsRelationship = RelationshipKind.Child)]
         public CreatureCollection Creatures { get; } = new CreatureCollection();
 
         public Board()
@@ -25,6 +28,7 @@ namespace PostSharp.Tutorials.Threading.Model
             
         }
 
+        [Writer]
         private void OnTimer(object state)
         {
            
@@ -57,6 +61,7 @@ namespace PostSharp.Tutorials.Threading.Model
 
         }
 
+        [Writer]
         public void Dispose()
         {
             this.timer?.Dispose();
