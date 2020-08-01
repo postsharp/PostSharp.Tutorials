@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Windows.Threading;
 using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
+using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.ViewModel
 {
-    public abstract class
-        ViewModelKeyedCollection<TKey, TModel, TViewModel> : AdvisableKeyedCollection<TKey, TViewModel>,
-            IViewModel<AdvisableCollection<TModel>>
+    public abstract class ViewModelKeyedCollection<TKey, TModel, TViewModel>  : AdvisableKeyedCollection<TKey,TViewModel>, IViewModel<AdvisableCollection<TModel>>
     {
-        Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
-        
-        public AdvisableCollection<TModel> Model
-        {
-            get;
-        }
+        [Reference]
+        public AdvisableCollection<TModel> Model { get; }
 
-        protected ViewModelKeyedCollection([Required] AdvisableCollection<TModel> model)
+        protected ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)
         {
             this.Model = model;
 
@@ -34,49 +29,37 @@ namespace PostSharp.Tutorials.Threading.ViewModel
 
         protected abstract TKey GetKeyForModelItem(TModel modelItem);
 
-        protected abstract TViewModel CreateViewModel(TModel modelItem);
+        protected abstract TViewModel CreateViewModel( TModel modelItem );
 
+        [Dispatched(DispatchedExecutionMode.NonBlockingContextSwitch)]
         private void OnModelCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            void RaiseEvents()
+            switch ( e.Action )
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Reset:
-                        this.Clear();
-                        break;
+                case NotifyCollectionChangedAction.Reset:
+                    this.Clear();
+                    break;
 
-                    case NotifyCollectionChangedAction.Add:
-                        foreach (TModel modelItem in e.NewItems)
+                case NotifyCollectionChangedAction.Add:
+                    foreach (TModel modelItem in e.NewItems)
+                    {
+                        this.Add(this.CreateViewModel(modelItem));
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (TModel modelItem in e.OldItems)
+                    {
+                        if (this.TryGetValue(this.GetKeyForModelItem(modelItem), out var item))
                         {
-                            this.Add(this.CreateViewModel(modelItem));
+                            this.Remove(item);
                         }
+                    }
+                    break;
 
-                        break;
+                default:
+                    throw new NotImplementedException();
 
-                    case NotifyCollectionChangedAction.Remove:
-                        foreach (TModel modelItem in e.OldItems)
-                        {
-                            if (this.TryGetValue(this.GetKeyForModelItem(modelItem), out var item))
-                            {
-                                this.Remove(item);
-                            }
-                        }
-
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-
-            if (this.dispatcher.CheckAccess())
-            {
-                RaiseEvents();
-            }
-            else
-            {
-                this.dispatcher.BeginInvoke(new Action(RaiseEvents));
             }
         }
     }
