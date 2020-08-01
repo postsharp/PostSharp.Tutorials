@@ -2,12 +2,14 @@
 using System.Collections.Specialized;
 using PostSharp.Patterns.Collections;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Model;
 using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.ViewModel
 {
     public abstract class ViewModelKeyedCollection<TKey, TModel, TViewModel>  : AdvisableKeyedCollection<TKey,TViewModel>, IViewModel<AdvisableCollection<TModel>>
     {
+        [Reference]
         public AdvisableCollection<TModel> Model { get; }
 
         protected ViewModelKeyedCollection( [Required] AdvisableCollection<TModel> model)

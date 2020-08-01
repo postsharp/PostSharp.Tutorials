@@ -130,16 +130,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PostSharp">
-      <Version>6.7.5-preview-3af16c</Version>
+      <Version>6.7.6-preview-9769ec</Version>
     </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Model">
-      <Version>6.7.5-preview-3af16c</Version>
+      <Version>6.7.6-preview-9769ec</Version>
     </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Threading">
-      <Version>6.7.5-preview-3af16c</Version>
+      <Version>6.7.6-preview-9769ec</Version>
     </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Xaml">
-      <Version>6.7.5-preview-3af16c</Version>
+      <Version>6.7.6-preview-9769ec</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable">
+      <Version>1.7.1</Version>
     </PackageReference>
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>

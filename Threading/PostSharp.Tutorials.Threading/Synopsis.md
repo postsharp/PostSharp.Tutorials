@@ -11,7 +11,7 @@
 The following steps are temporary bug workaround:
 
 * In VS, make sure other versions of PostSharp Tools for Visual Studio are uninstalled.
-* Install the VSIX given in the OneDrive folder (this is another one than for the previous video).
+* Install the VSIX given in the OneDrive folder (https://1drv.ms/u/s!AjIdLvQsWyhnhfxdMaA6SFXcNCA0cg?e=fPmbHN - this is another one than for the previous video).
 * Download the `*.nupkg` files from OneDrive and copy the directory path to the clipboard.
 * In VS, go to Tools / Options / NuGet Package Manager / Package Sources.
 * Name it say `PostSharp Private` and paste the directory path.
@@ -46,11 +46,15 @@ The following steps are temporary bug workaround:
 
 * Click _Next_.
 
+* Off-record: you may need to update the NuGet packages to the private build.
+
 [6]
 
 * Go to `IViewModel` and add the '[ThreadAffine]' custom attribute.
 
 * Go to `BoardViewModel.Creatures` and add '[Child]`.
+
+* Go to `ViewModelKeyedCollection.Reference` and add `[Reference]`.
 
 [7]
 
@@ -132,6 +136,8 @@ The following steps are temporary bug workaround:
 * Double click on the warning.
 
 * Add `[Synchronized]` on the `RandomGenerator` class.
+
+* Go to `colors` field. Change type to `ImmutableArray<string>` and change `ToArray()` to `ToImmutableArray()`.
 
 * Build and show that the warnings have disappeared.
 
