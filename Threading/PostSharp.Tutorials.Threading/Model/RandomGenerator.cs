@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Windows.Media;
 using PostSharp.Patterns.Threading;
 
 namespace PostSharp.Tutorials.Threading.Model
 {
-    [Synchronized]
     internal class RandomGenerator
     {
 
@@ -14,7 +12,7 @@ namespace PostSharp.Tutorials.Threading.Model
 
         private readonly Random random = new Random();
 
-        private readonly ImmutableArray<string> colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToImmutableArray();
+        private readonly string[] colors = typeof(Brushes).GetProperties().Select(p => p.Name).ToArray();
 
         public string GetRandomColor()
         {

@@ -11,7 +11,6 @@ using PostSharp.Tutorials.Threading.Model;
 namespace PostSharp.Tutorials.Threading.Communication
 {
 
-    [Immutable]
     internal class BoardServiceClient : IBoardCallback, IConnection
     {
         private readonly Board board;
@@ -94,7 +93,6 @@ namespace PostSharp.Tutorials.Threading.Communication
             Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
 
-        [Background]
         private void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var creature = (Creature)sender;
@@ -123,7 +121,6 @@ namespace PostSharp.Tutorials.Threading.Communication
       
         }
 
-        [Background]
         private void OnCreatureCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch ( e.Action )

@@ -1,0 +1,14 @@
+diff a/Threading/PostSharp.Tutorials.Threading/Model/Creature.cs b/Threading/PostSharp.Tutorials.Threading/Model/Creature.cs	(rejected hunks)
+@@ -1,10 +1,12 @@
+ ﻿using System;
+ using PostSharp.Patterns.Contracts;
+ using PostSharp.Patterns.Model;
++using PostSharp.Patterns.Threading;
+ 
+ namespace PostSharp.Tutorials.Threading.Model
+ {
+ 
++    [ReaderWriterSynchronized]
+     [NotifyPropertyChanged( PreventFalsePositives = true ) ]
+     public class Creature
+     {

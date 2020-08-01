@@ -1,0 +1,9 @@
+diff a/Threading/PostSharp.Tutorials.Threading/Model/Board.cs b/Threading/PostSharp.Tutorials.Threading/Model/Board.cs	(rejected hunks)
+@@ -61,6 +61,7 @@
+ 
+         }
+ 
++        [Writer]
+         public void Dispose()
+         {
+             this.timer?.Dispose();

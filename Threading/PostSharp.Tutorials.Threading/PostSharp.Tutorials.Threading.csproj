@@ -81,7 +81,6 @@
     <Compile Include="Communication\IBoardCallback.cs" />
     <Compile Include="Communication\IBoardService.cs" />
     <Compile Include="Communication\IConnection.cs" />
-    <Compile Include="GlobalAspects.cs" />
     <Compile Include="Model\CreatureCollection.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Model\RandomGenerator.cs" />

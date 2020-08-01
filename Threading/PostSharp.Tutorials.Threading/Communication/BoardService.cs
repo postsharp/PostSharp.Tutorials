@@ -1,6 +1,4 @@
-﻿using PostSharp.Patterns.Collections;
-using PostSharp.Patterns.Threading;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -17,16 +15,11 @@ namespace PostSharp.Tutorials.Threading.Communication
 {
   
 
-    [Immutable]
     internal class BoardService : ServiceHost, IConnection
     {
         public Board Board { get; }
         
-        // Using a ConcurrentDictionary within an Immutable class is the best choice here. An alternative design would
-        // be to have a [ReaderWriterSynchronized] model on BoardService, but this would result in higher complexity
-        // and higher thread contention.
-        [Reference]
-        private readonly ConcurrentDictionary<Guid, BoardServiceSession> sessions = new ConcurrentDictionary<Guid, BoardServiceSession>();
+        private readonly Dictionary<Guid, BoardServiceSession> sessions = new Dictionary<Guid, BoardServiceSession>();
 
 
         private BoardService(Board board, string baseAddress) : base(typeof(BoardServiceSession), new Uri(baseAddress))
@@ -39,12 +32,12 @@ namespace PostSharp.Tutorials.Threading.Communication
 
         internal void AddSession(BoardServiceSession session)
         {
-            this.sessions.TryAdd(session.Id, session);
+            this.sessions.Add(session.Id, session);
         }
 
         internal void RemoveSession(Guid sessionId)
         {
-            this.sessions.TryRemove(sessionId, out _ );
+            this.sessions.Remove(sessionId);
         }
 
         public static BoardService StartService(Board board)
@@ -92,7 +85,6 @@ namespace PostSharp.Tutorials.Threading.Communication
             Post.Cast<Creature, INotifyPropertyChanged>(creature).PropertyChanged += this.OnCreaturePropertyChanged;
         }
 
-        [Background]
         private void OnCreaturesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -118,7 +110,6 @@ namespace PostSharp.Tutorials.Threading.Communication
             }
         }
 
-        [Background]
         private void OnCreaturePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var creature = (Creature)sender;

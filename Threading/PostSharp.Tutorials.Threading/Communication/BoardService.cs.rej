@@ -1,0 +1,9 @@
+diff a/Threading/PostSharp.Tutorials.Threading/Communication/BoardService.cs b/Threading/PostSharp.Tutorials.Threading/Communication/BoardService.cs	(rejected hunks)
+@@ -1,4 +0,6 @@
+-﻿using System;
++﻿using PostSharp.Patterns.Collections;
++using PostSharp.Patterns.Threading;
++using System;
+ using System.Collections.Concurrent;
+ using System.Collections.Generic;
+ using System.Collections.Specialized;

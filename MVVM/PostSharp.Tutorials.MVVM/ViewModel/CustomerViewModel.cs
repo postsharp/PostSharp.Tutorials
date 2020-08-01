@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
-using PostSharp.Patterns.Model;
-using PostSharp.Patterns.Xaml;
 using PostSharp.Tutorials.MVVM.Model;
 
 namespace PostSharp.Tutorials.MVVM.ViewModel
 {
-    [NotifyPropertyChanged]
     public class CustomerViewModel
     {
         public CustomerModel Customer { get; set; }
