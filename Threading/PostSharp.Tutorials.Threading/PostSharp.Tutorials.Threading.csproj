@@ -134,6 +134,9 @@
     <PackageReference Include="PostSharp.Patterns.Model">
       <Version>6.7.6-preview-9769ec</Version>
     </PackageReference>
+    <PackageReference Include="PostSharp.Patterns.Threading">
+      <Version>6.7.6-preview-9769ec</Version>
+    </PackageReference>
     <PackageReference Include="PostSharp.Patterns.Xaml">
       <Version>6.7.6-preview-9769ec</Version>
     </PackageReference>
