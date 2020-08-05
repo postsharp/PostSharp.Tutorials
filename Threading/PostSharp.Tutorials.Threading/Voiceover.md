@@ -3,8 +3,9 @@
 [1]
 
 Building a reliable multi-threaded app in .NET can be a very complex task. Working with locks, 
-events and queues force you to reason at a ridiculously low level of abstraction, with too many
-small details to think about. Defects typically cause random errors that are impossible to reproduce.
+events and queues force you to reason at a ridiculously low level of abstraction, and with so many
+small details to think about,  the code no longer fits your brains. 
+As a consequence, users report random exceptions that are impossible to reproduce.
  
 With PostSharp Threading, you can address multi-threading at a higher level of abstraction, 
 with deterministic machine-verified threading models. Thanks to PostSharp, your code will be cleaner,
@@ -12,9 +13,9 @@ you will avoid random errors, and you will get more time to focus on what matter
 
 [2]
 
-Here is a sample multi-threaded app. This is a multi-player WPF game where state changes come
-from three sources: the UI, the timer, and the network. If two of these sources trigger changes
- at the same time, random defects may happen.
+Here is a sample multi-threaded app. This is a multi-player WPF game where the state can be changed
+either because of the UI, the timer, or the network. If two of these sources change the state at the same time, 
+random errors may happen.
 
 Let's see how you can make this app thread-safe with PostSharp Threading.
 
@@ -26,8 +27,7 @@ Instead of reasoning about individual fields, you can take decisions about whole
 [4]
 
 For the view and the view model, the thread-affine model is a good choice. It means that only
-the UI thread will have access to these objects. From the moment you take this decision, you can
-completely stop thinking about multi-threading in these classes.
+the UI thread will have access to these objects. 
 
 [5] 
 
@@ -41,14 +41,14 @@ are references.
 Instead of applying the aspect to every single class, you can apply it on an interface and it
 will automatically apply to all derived classes.
 
-`Creatures` are children object of `BoardViewModel`, so you can mark it as the `[Child]` attribute.
+`Creatures` are children object of `BoardViewModel`, so you can mark it with the `[Child]` attribute.
 
 
 [7]
 
-Unlike the view, the model classes are accessed both from the UI thread and several background
+Unlike the view, the model classes are accessed from both the UI thread and several background
 threads. Since the state of these objects is mutable, the reader-writer synchronized model is great
-for this namespace. 
+for this namespace. It allows several readers at the same time, but writers get exclusive access.
 
 [8]
 
@@ -59,7 +59,7 @@ This model requires you to mark public methods as readers or writers.
 Let's now look at the communication namespace.
 
 The network client has no mutable state and can be marked as immutable. Of course this class
-was already thread-safe before, but thanks to this aspect you are guaranteed to get a runtime exception 
+was already thread-safe before, but thanks to this aspect you are now guaranteed to get a runtime exception 
 if someone inadvertently adds some mutable state to this class.
 
 [10]
@@ -69,12 +69,12 @@ The same with the server-side session object.
 [11]
 
 For some classes, the choice is not so simple. The `BoardService` class contains a mutable list of 
-client sessions which seems to call for a lock-based model, but it also performs I/O so a lock-based approach 
+client sessions, which seems to call for a lock-based model, but it also performs I/O so a lock-based approach 
 would cause high thread contention. 
 
 [12]
 
-So you can decide to treat this class as two objects: `BoardService`
+The best option here is to treat this class as two entities: `BoardService`
 itself will be immutable, but the session list will be stored in a thread-safe dictionary. 
 
 [13]
@@ -84,19 +84,23 @@ Run the app and see if it works.
 [14]
 
 Oops. The `ThreadAccessException` means that timer thread is attempting to access the `Board` object but does
-not hold the proper access right. This is because the `OnTimer` method is missing a `Writer` attribute. 
+not own the proper access right. This is because the `OnTimer` method is missing a `Writer` attribute. 
 
 [15]
 
-The exception is _intentional_ and will only happen in your debug build. Without
-this exception, you would have missed a defect and risked random failures in production. That's what
-we mean by deterministic machine-verified threading model. PostSharp only raises a compilation error 
-for instance public members, but this is a private event handler method.
+The exception is _intentional_ and will only happen in your _debug_ build. Without
+this exception, you would have overlooked the defect and risked random failures in production. But thanks to this exception, 
+the problem has been made visible and you're now forced to address it. That's what
+we mean by deterministic machine-verified threading models. PostSharp only raises a compilation error 
+for  _public_ members when it misses a `Reader` or `Writer` attribute, but this is a _private_ event handler method.
+That's why the problem has only been identified at run time.
 
 [16]
 
-There is another occurrence of this error in this code: the `OnConnectionClosed` handler, invoked
-from the background thread. Add the `Dispatched` aspect to this method to force it to run on the UI thread.
+There is another occurrence of this error in the `OnConnectionClosed` handler of the thread-affine `MainWindow` class.
+The handler is invoked from a background thread so it would also throw a `ThreadAccessException`.
+
+To force the method to execute on the UI thread, apply the `Dispatched` aspect.
 
 [17]
 
@@ -108,12 +112,12 @@ Great!
 
 How can you know that you are done and that you didn't forget to assign any class to a threading model?
 
-Add the _Thread Safety Policy_ to the project and build the project. This policy will warn you
-about potentially unsafe classes and dangerous static fields.
+You can add the _Thread Safety Policy_ to the project. It will check your code during the build and warn you
+about potentially unsafe classes and static fields.
 
 [19]
 
-Oh, we forgot the `RandomGenerator` class. Make it a _synchronized_ object so everything executes within a lock.
+Oh, we forgot the `RandomGenerator` class. Make it a _synchronized_ object it never gets accessed concurrently.
 Instead of an array, use an `ImmutableArray` wherever you can. It makes it easier to reason about your code.
 
 Build again to see if the warnings disappeared.
@@ -122,16 +126,14 @@ Done!
 
 [20]
 
-A last thing you can do with PostSharp Threading is easily dispatch the execution of a method to
-a foreground or a background thread.
+You can still do a few optimizations on this codebase.
 
-This code in `OnModelCollectionChanged` ensures that the collection is modified from the UI thread whereas 
-the event is triggered from a background thread. This complex logic can be replaced by a simple `[Dispatched]` aspect.
+This code in `OnModelCollectionChanged` can be replaced by a simple `[Dispatched]` aspect.
 
 [21]
 
-The communication stack would run smoother if some methods were called in the background. You can do that with the `[Background]`
-aspect.
+The app run more smoothly if the communication stack processes events in the background. 
+You can do that with the `[Background]` aspect.
 
 [22]
 
@@ -141,11 +143,10 @@ Excellent.
 
 Thank you for watching this demo.
 
-Thanks to PostSharp Threading, you can make your multi-threaded application robust and reliable. By assigning 
+Thanks to PostSharp Threading, you can make your multi-threaded application robust and reliable. By assigning
 deterministic threading models to your code, you can identify defects that would have otherwise staid hidden and
-caused random failures in production. You can take architectural decisions at the level of class hierarchies or namespaces
-instead of individual fields, reducing by an order of magnitude the number of decisions to be taken. And you enforce these
- decisions across your whole codebase without relying on code reviews. 
+caused random failures in production. With PostSharp Threading, you can architectural decisions at the level of class hierarchies or namespaces instead of individual fields, reducing by an order of magnitude the number of decisions to be taken.
+Trust the build process to enforce these decisions across your whole codebase and stop worrying about multi-threading.
 
 
 
