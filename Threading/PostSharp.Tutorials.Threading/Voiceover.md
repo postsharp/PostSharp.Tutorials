@@ -3,8 +3,8 @@
 [1]
 
 Building a reliable multi-threaded app in .NET can be a very complex task. Working with locks, 
-events and queues force you to reason at a ridiculously low level of abstraction, and with so many
-small details to think about,  the code no longer fits your brains. 
+events and queues forces you to reason at a ridiculously low level of abstraction, and with so many
+small details to think about, the code no longer fits in your brains. 
 As a consequence, users report random exceptions that are impossible to reproduce.
  
 With PostSharp Threading, you can address multi-threading at a higher level of abstraction, 
@@ -41,7 +41,7 @@ are references.
 Instead of applying the aspect to every single class, you can apply it on an interface and it
 will automatically apply to all derived classes.
 
-`Creatures` are children object of `BoardViewModel`, so you can mark it with the `[Child]` attribute.
+`Creatures` are children objects of `BoardViewModel`, so you can mark it with the `[Child]` attribute.
 
 
 [7]
@@ -132,7 +132,7 @@ This code in `OnModelCollectionChanged` can be replaced by a simple `[Dispatched
 
 [21]
 
-The app run more smoothly if the communication stack processes events in the background. 
+The app runs more smoothly if the communication stack processes events in the background. 
 You can do that with the `[Background]` aspect.
 
 [22]
@@ -145,7 +145,8 @@ Thank you for watching this demo.
 
 Thanks to PostSharp Threading, you can make your multi-threaded application robust and reliable. By assigning
 deterministic threading models to your code, you can identify defects that would have otherwise staid hidden and
-caused random failures in production. With PostSharp Threading, you can architectural decisions at the level of class hierarchies or namespaces instead of individual fields, reducing by an order of magnitude the number of decisions to be taken.
+caused random failures in production. With PostSharp Threading, you can take architectural decisions at the level 
+of class hierarchies or namespaces instead of individual fields, reducing by an order of magnitude the number of decisions to be taken.
 Trust the build process to enforce these decisions across your whole codebase and stop worrying about multi-threading.
 
 
