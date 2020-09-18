@@ -117,7 +117,7 @@ about potentially unsafe classes and static fields.
 
 [19]
 
-Oh, we forgot the `RandomGenerator` class. Make it a _synchronized_ object it never gets accessed concurrently.
+Oh, we forgot the `RandomGenerator` class. Make it a _synchronized_ object. It never gets accessed concurrently.
 Instead of an array, use an `ImmutableArray` wherever you can. It makes it easier to reason about your code.
 
 Build again to see if the warnings disappeared.
