@@ -4,7 +4,7 @@
 
 Building a reliable multi-threaded app in .NET can be a very complex task. Working with locks, 
 events and queues forces you to reason at a ridiculously low level of abstraction, and with so many
-small details to think about, the code no longer fits in your brains. 
+small details to think about, the code no longer fits in your brain. 
 As a consequence, users report random exceptions that are impossible to reproduce.
  
 With PostSharp Threading, you can address multi-threading at a higher level of abstraction, 
